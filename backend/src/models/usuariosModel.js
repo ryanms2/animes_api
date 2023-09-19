@@ -55,7 +55,7 @@ const logado = async(id) => {
   const [user] = await connection.query('SELECT * FROM usuarios WHERE id = ?', [id]);
   const queryAnimesAll = 'SELECT * FROM animes_favoritos_usuario WHERE id_usuario = ?';
   const [animesAll] = await connection.execute(queryAnimesAll, [user[0].id]);
-  console.log(animesAll[0]);
+  console.log(animesAll[0].id_anime);
 
   const query = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
 
@@ -64,8 +64,33 @@ const logado = async(id) => {
   return user;
 };
 
+const addAnimeFavorito = async(idUsuario, idAnime) => {
+  const idUser = idUsuario;
+  const idAnimee = idAnime;
+  
+  const queryAnimesUsuario = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario = ?';
+  const [verifica] = await connection.execute(queryAnimesUsuario, [idUser]);
+  const veriAnimes = (verifica) => verifica.id_anime;
+  const obtAnimes = verifica.map(veriAnimes);
+  console.log(verifica.map(veriAnimes));
+  for (let i = 0; i < obtAnimes.length; i++) {
+
+    if (obtAnimes[i] == idAnimee) {
+    return {message: "Esse anime já foi adicionado a lista"};
+    };
+    
+  };
+  
+
+  const query = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
+  const add = await connection.execute(query, [idUser, idAnimee]);
+
+  return {message: "anime adicionado com sucesso!"};
+};
+
 module.exports = {
     registro,
     login,
-    logado
+    logado,
+    addAnimeFavorito
 };

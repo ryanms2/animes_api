@@ -20,8 +20,17 @@ const logado = async(req, res) => {
     res.status(200).json(dados);
 };
 
+const addAnimeFavorito = async(req, res) => {
+    const { idUsuario, idAnime } = req.body;
+
+    const resposta = await usuarioModel.addAnimeFavorito(idUsuario, idAnime);
+
+    res.status(200).json(resposta);
+};
+
 module.exports = {
     registro,
     login,
-    logado
+    logado,
+    addAnimeFavorito
 };

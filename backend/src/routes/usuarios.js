@@ -3,7 +3,8 @@ const router = require("express").Router();
 const usuarioController = require("../controllers/usuarioController");
 const usuarioMiddleware = require("../middlewares/usuarioMiddleware");
 
-router.post("/usuario/registro", usuarioMiddleware.validaEmail,
+router.post("/usuario/registro",
+usuarioMiddleware.validaEmail,
 usuarioMiddleware.validaNome,
 usuarioMiddleware.validaSenha,
 usuarioMiddleware.validaUsuario,
@@ -18,5 +19,8 @@ router.get("/usuario/:id",
 usuarioMiddleware.usuarioExiste,
 usuarioMiddleware.checkToken,
 usuarioController.logado);
+
+router.post("/usuario/addAnime",
+usuarioController.addAnimeFavorito);
 
 module.exports = router;
