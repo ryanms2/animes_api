@@ -21,6 +21,7 @@ usuarioMiddleware.checkToken,
 usuarioController.logado);
 
 router.post("/usuario/addAnime",
+usuarioMiddleware.checkToken,
 usuarioController.addAnimeFavorito);
 
 module.exports = router;

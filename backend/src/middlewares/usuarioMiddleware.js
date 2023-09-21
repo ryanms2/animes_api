@@ -103,6 +103,8 @@ const checkToken = (req, res, next) => {
       const secret = process.env.SECRET;
   
       const decoded = jwt.verify(token, secret);
+      console.log(decoded.id);
+      console.log(id);
       
       if (decoded.id != id) {
         return res.status(401).json({message: "Login não autorizado, tente novamente."});

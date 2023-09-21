@@ -81,11 +81,16 @@ const addAnimeFavorito = async(idUsuario, idAnime) => {
     
   };
   
+  try {
+    const query = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
+    const add = await connection.execute(query, [idUser, idAnimee]);
 
-  const query = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
-  const add = await connection.execute(query, [idUser, idAnimee]);
-
-  return {message: "anime adicionado com sucesso!"};
+    return {message: "anime adicionado com sucesso!"};
+  } catch (error) {
+    console.log(error);
+    return {message: "Erro ao adicionar o anime."};
+  };
+  
 };
 
 module.exports = {
