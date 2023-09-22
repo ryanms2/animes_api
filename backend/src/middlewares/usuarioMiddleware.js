@@ -91,7 +91,7 @@ const validaSenhaLogin = async(req, res, next) => {
 }
 
 const checkToken = (req, res, next) => {
-    const id = req.params.id
+
     const jwt = require("jsonwebtoken");
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
@@ -104,9 +104,8 @@ const checkToken = (req, res, next) => {
   
       const decoded = jwt.verify(token, secret);
       console.log(decoded.id);
-      console.log(id);
       
-      if (decoded.id != id) {
+      if (!decoded.id) {
         return res.status(401).json({message: "Login não autorizado, tente novamente."});
       };
       

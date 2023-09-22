@@ -21,9 +21,18 @@ const logado = async(req, res) => {
 };
 
 const addAnimeFavorito = async(req, res) => {
-    const { idUsuario, idAnime } = req.body;
+    const { idAnime } = req.body;
 
-    const resposta = await usuarioModel.addAnimeFavorito(idUsuario, idAnime);
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+
+    const resposta = await usuarioModel.addAnimeFavorito(decodedId, idAnime);
 
     res.status(200).json(resposta);
 };

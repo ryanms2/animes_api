@@ -64,8 +64,8 @@ const logado = async(id) => {
   return user;
 };
 
-const addAnimeFavorito = async(idUsuario, idAnime) => {
-  const idUser = idUsuario;
+const addAnimeFavorito = async(decodedId, idAnime) => {
+  const idUser = decodedId;
   const idAnimee = idAnime;
   
   const queryAnimesUsuario = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario = ?';
