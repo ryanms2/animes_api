@@ -13,6 +13,14 @@ const login = async(req, res) => {
     res.status(200).json(usuario);
 };
 
+const redefinirSenha = async(req, res) => {
+    const { senha, repitaSenha } = req.body;
+
+    const redefinido = await usuarioModel.redefinirSenha(senha, repitaSenha);
+
+    res.status(200).json(redefinido);
+};
+
 const logado = async(req, res) => {
     const id = req.params.id
     const dados = await usuarioModel.logado(id);
@@ -41,5 +49,6 @@ module.exports = {
     registro,
     login,
     logado,
-    addAnimeFavorito
+    addAnimeFavorito,
+    redefinirSenha
 };

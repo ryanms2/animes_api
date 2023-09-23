@@ -24,4 +24,7 @@ router.post("/usuario/addAnime",
 usuarioMiddleware.checkToken,
 usuarioController.addAnimeFavorito);
 
+router.post("/usuario/redefinirSenha",
+usuarioController.redefinirSenha);
+
 module.exports = router;

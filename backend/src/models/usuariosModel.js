@@ -51,6 +51,18 @@ const login = async (usuario) => {
       };
 };
 
+const redefinirSenha = async(senha, repitaSenha, id) => {
+  const senhaUser = senha;
+  console.log(senhaUser)
+  const repitaSenhaUser = repitaSenha;
+  const idUser = 1;
+
+  const [senhaDB] = await connection.query('SELECT senha FROM usuarios WHERE id = ?', [idUser]);
+  const checkSenha = await bcrypt.compare(senhaUser, senhaDB[0].senha);
+  console.log(checkSenha);
+  
+};
+
 const logado = async(id) => {
   const [user] = await connection.query('SELECT * FROM usuarios WHERE id = ?', [id]);
   const queryAnimesAll = 'SELECT * FROM animes_favoritos_usuario WHERE id_usuario = ?';
@@ -97,5 +109,6 @@ module.exports = {
     registro,
     login,
     logado,
-    addAnimeFavorito
+    addAnimeFavorito,
+    redefinirSenha
 };
