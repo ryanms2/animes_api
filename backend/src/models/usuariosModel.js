@@ -51,16 +51,17 @@ const login = async (usuario) => {
       };
 };
 
-const redefinirSenha = async(senha, repitaSenha, id) => {
+const redefinirSenha = async(senha, id) => {
   const senhaUser = senha;
-  console.log(senhaUser)
-  const repitaSenhaUser = repitaSenha;
-  const idUser = 1;
+  const idUser = id;
 
-  const [senhaDB] = await connection.query('SELECT senha FROM usuarios WHERE id = ?', [idUser]);
-  const checkSenha = await bcrypt.compare(senhaUser, senhaDB[0].senha);
-  console.log(checkSenha);
+  const salt = await bcrypt.genSalt(12);
+  const hashedSenha = await bcrypt.hash(senhaUser, salt);
+
+  const query = 'UPDATE usuarios SET senha = ? WHERE id = ?';
+  const [senhaDB] = await connection.execute(query, [hashedSenha, idUser]);
   
+  return {message: "Senha atualizada com sucesso!"};
 };
 
 const logado = async(id) => {

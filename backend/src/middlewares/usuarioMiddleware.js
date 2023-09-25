@@ -29,7 +29,7 @@ const validaEmail = (req, res, next) => {
 const validaSenha = (req, res, next) => {
     const {body} = req;
 
-    if (body.senha == undefined || !body.senha || body.senha < 12) {
+    if (body.senha == undefined || !body.senha || body.senha < 6) {
 
         return res.status(409).json({message: "Insira uma senha válida!"});
     };
@@ -72,7 +72,7 @@ const emailExiste = async(req, res, next) => {
 const validaSenhaLogin = async(req, res, next) => {
     const {body} = req;
 
-    if (body.senha == undefined || !body.senha) {
+    if (body.senha == undefined || !body.senha || body.senha < 6) {
         return res.status(409).json({msg: "Insira uma senha válida"});
     };
 
@@ -88,7 +88,50 @@ const validaSenhaLogin = async(req, res, next) => {
       };
 
     next();
-}
+};
+
+const validaSenhaRedefinir = async(req, res, next) => {
+    const {body} = req;
+
+    if (body.senha == undefined || !body.senha || body.senha < 6) {
+        return res.status(409).json({message: "Insira uma senha válida."});
+    };
+
+    if (body.repitaSenha == undefined || !body.repitaSenha) {
+        return res.status(409).json({message: "repita senha inválido, insira novamente."});
+    };
+
+    if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha < 6) {
+        return res.status(409).json({message: "Insira uma senha válida."});
+    };
+
+    if (body.repitaSenha !== body.novaSenha) {
+        return res.status(409).json({message: "As senhas devem ser iguais."});
+    };
+
+    const bcrypt = require("bcrypt");
+    const connection = require("../db/conn");
+
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    console.log(decoded.id);
+    const userId = decoded.id;
+
+    const [senhaDB] = await connection.query('SELECT senha FROM usuarios WHERE id = ?', [userId]);
+
+    const checkSenha = await bcrypt.compare(body.senha, senhaDB[0].senha);
+
+    if (!checkSenha) {
+        return res.status(409).json({ message: "Senha incorreta" });
+    };
+
+    next();
+};
 
 const checkToken = (req, res, next) => {
 
@@ -136,5 +179,6 @@ module.exports = {
     emailExiste,
     validaSenhaLogin,
     checkToken,
-    usuarioExiste
+    usuarioExiste,
+    validaSenhaRedefinir
 };

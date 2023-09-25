@@ -14,9 +14,18 @@ const login = async(req, res) => {
 };
 
 const redefinirSenha = async(req, res) => {
-    const { senha, repitaSenha } = req.body;
+    const { repitaSenha } = req.body;
 
-    const redefinido = await usuarioModel.redefinirSenha(senha, repitaSenha);
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+
+    const redefinido = await usuarioModel.redefinirSenha(repitaSenha, decodedId);
 
     res.status(200).json(redefinido);
 };

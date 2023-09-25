@@ -25,6 +25,7 @@ usuarioMiddleware.checkToken,
 usuarioController.addAnimeFavorito);
 
 router.post("/usuario/redefinirSenha",
+usuarioMiddleware.validaSenhaRedefinir,
 usuarioController.redefinirSenha);
 
 module.exports = router;
