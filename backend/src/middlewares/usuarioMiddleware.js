@@ -72,7 +72,7 @@ const emailExiste = async(req, res, next) => {
 const validaSenhaLogin = async(req, res, next) => {
     const {body} = req;
 
-    if (body.senha == undefined || !body.senha || body.senha < 6) {
+    if (body.senha == undefined || !body.senha || body.senha.length < 6) {
         return res.status(409).json({msg: "Insira uma senha válida"});
     };
 
@@ -93,19 +93,24 @@ const validaSenhaLogin = async(req, res, next) => {
 const validaSenhaRedefinir = async(req, res, next) => {
     const {body} = req;
 
-    if (body.senha == undefined || !body.senha || body.senha < 6) {
+    const novaSenha = body.novaSenha;
+    const repitaSenha = body.repitaSenha;
+
+    if (body.senha == undefined || !body.senha || body.senha.length < 6) {
         return res.status(409).json({message: "Insira uma senha válida."});
     };
 
-    if (body.repitaSenha == undefined || !body.repitaSenha) {
+    if (repitaSenha == undefined || !repitaSenha) {
         return res.status(409).json({message: "repita senha inválido, insira novamente."});
     };
 
-    if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha < 6) {
-        return res.status(409).json({message: "Insira uma senha válida."});
+    if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha.length < 6) {
+        return res.status(409).json({message: "Insira uma nova senha válida."});
     };
 
-    if (body.repitaSenha !== body.novaSenha) {
+    console.log(repitaSenha, novaSenha)
+    
+    if (repitaSenha !== novaSenha) {
         return res.status(409).json({message: "As senhas devem ser iguais."});
     };
 
