@@ -58,10 +58,29 @@ const redefinirSenha = async(senha, id) => {
   const salt = await bcrypt.genSalt(12);
   const hashedSenha = await bcrypt.hash(senhaUser, salt);
 
+  try {
   const query = 'UPDATE usuarios SET senha = ? WHERE id = ?';
   const [senhaDB] = await connection.execute(query, [hashedSenha, idUser]);
   
   return {message: "Senha atualizada com sucesso!"};
+  } catch (error) {
+    console.log(error);
+  };
+  
+};
+
+const redefinirNome = async(nome, id) => {
+  const nomeUser = nome;
+  const idUser = id;
+
+  try {
+  const query = 'UPDATE usuarios SET nome = ? WHERE id = ?';
+  const [nomeDB] = await connection.execute(query, [nomeUser, idUser]);
+  
+  return {message: "Nome atualizado com sucesso!"};
+  } catch (error) {
+    console.log(error);
+  };
 };
 
 const logado = async(id) => {
@@ -85,7 +104,7 @@ const addAnimeFavorito = async(decodedId, idAnime) => {
   const [verifica] = await connection.execute(queryAnimesUsuario, [idUser]);
   const veriAnimes = (verifica) => verifica.id_anime;
   const obtAnimes = verifica.map(veriAnimes);
-  console.log(verifica.map(veriAnimes));
+  
   for (let i = 0; i < obtAnimes.length; i++) {
 
     if (obtAnimes[i] == idAnimee) {
@@ -111,5 +130,6 @@ module.exports = {
     login,
     logado,
     addAnimeFavorito,
-    redefinirSenha
+    redefinirSenha,
+    redefinirNome
 };

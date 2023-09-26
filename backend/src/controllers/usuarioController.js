@@ -30,6 +30,23 @@ const redefinirSenha = async(req, res) => {
     res.status(200).json(redefinido);
 };
 
+const redefinirNome = async(req, res) => {
+    const { repitaNome } = req.body;
+
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+
+    const redefinido = await usuarioModel.redefinirNome(repitaNome, decodedId);
+
+    res.status(200).json(redefinido);
+};
+
 const logado = async(req, res) => {
     const id = req.params.id
     const dados = await usuarioModel.logado(id);
@@ -59,5 +76,6 @@ module.exports = {
     login,
     logado,
     addAnimeFavorito,
-    redefinirSenha
+    redefinirSenha,
+    redefinirNome
 };

@@ -45,9 +45,12 @@ const validaNome = (req, res, next) => {
    const {body} = req;
 
    if (body.nome == '' || !body.nome) {
-
     return res.status(409).json({message: "O nome não pode ser vazio."});
    };
+   
+   if (body.nome.length < 5) {
+    return res.status(409).json({message: "O nome deve ter os caracteres minimos."})
+   }
 
    next();
 };
@@ -93,24 +96,19 @@ const validaSenhaLogin = async(req, res, next) => {
 const validaSenhaRedefinir = async(req, res, next) => {
     const {body} = req;
 
-    const novaSenha = body.novaSenha;
-    const repitaSenha = body.repitaSenha;
-
     if (body.senha == undefined || !body.senha || body.senha.length < 6) {
         return res.status(409).json({message: "Insira uma senha válida."});
     };
 
-    if (repitaSenha == undefined || !repitaSenha) {
+    if (body.repitaSenha == undefined || !body.repitaSenha) {
         return res.status(409).json({message: "repita senha inválido, insira novamente."});
     };
 
     if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha.length < 6) {
         return res.status(409).json({message: "Insira uma nova senha válida."});
     };
-
-    console.log(repitaSenha, novaSenha)
     
-    if (repitaSenha !== novaSenha) {
+    if (body.repitaSenha !== body.novaSenha) {
         return res.status(409).json({message: "As senhas devem ser iguais."});
     };
 
@@ -133,6 +131,16 @@ const validaSenhaRedefinir = async(req, res, next) => {
 
     if (!checkSenha) {
         return res.status(409).json({ message: "Senha incorreta" });
+    };
+
+    next();
+};
+
+const validaNomeRedefinir = (req, res, next) => {
+    const {body} = req;
+
+    if (body.repitaNome == undefined || !body.repitaNome || body.repitaNome.length < 5) {
+        return res.status(409).json({message: "Insira um nome válido."});
     };
 
     next();
@@ -185,5 +193,6 @@ module.exports = {
     validaSenhaLogin,
     checkToken,
     usuarioExiste,
-    validaSenhaRedefinir
+    validaSenhaRedefinir,
+    validaNomeRedefinir
 };
