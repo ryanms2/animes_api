@@ -21,8 +21,8 @@ const deleteAnime = async (req, res) => {
 
 const updateAnime = async (req, res) => {
     const { id } = req.params;
-    await animesModel.updateAnime(id, req.body);
-    return res.status(204).json();
+    const resposta = await animesModel.updateAnime(id, req.body);
+    return res.status(200).json(resposta);
 };
 
 const selectAnime = async (req, res) => {

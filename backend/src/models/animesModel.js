@@ -29,7 +29,12 @@ const updateAnime = async (id, anime) => {
     const query = 'UPDATE animes SET titulo= ?, imagem= ? WHERE id= ?';
 
     const [updatedAnime] = await connection.execute(query, [titulo, imagem, id]);
-    return updatedAnime;
+    try {
+        return {message: "Anime atualizado com sucesso."};
+    } catch (error) {
+        console.log(error);
+        return {message: "Houve um erro ao atualizar o anime."};
+    };
 };
 
 const selectAnime = async (id) => {
