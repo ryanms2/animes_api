@@ -1,3 +1,35 @@
 
+h1 {
+    color: white;
+}
 
+body {
+    background-color: #1A1A1A;
+}
+
+.col{
+    margin-bottom: 5px;
+}
+
+.card{
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+}
+.card-img-top {
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+.card-img-top:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-body {
+    padding: 0px;
+    margin: 0px;
+}
 

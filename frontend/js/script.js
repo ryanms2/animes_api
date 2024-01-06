@@ -1,0 +1,1 @@
+fetch("https://waifu.it/api/baka").then((response)=> response.json()).then((data)=> console.log(data));
