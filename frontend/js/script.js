@@ -1,51 +1,54 @@
-// Função para carregar a lista de animes com base na categoria
-function carregarListaPorCategoria(categoria) {
-    fetch(`https://kitsu.io/api/edge/anime?filter[categories]=${categoria}&page[limit]=20&page[offset]=0`)
-        .then((resp) => resp.json())
-        .then((dados) => {
-            const animes = dados.data;
-            const col = document.getElementById("animes");
-            col.innerHTML= "";
-            renderizarListaDeAnimes(animes);
-        })
-        .catch((erro) => console.error(erro));
-}
-
-// Adiciona um ouvinte de evento ao botão "Aventura"
-const btnAventura = document.getElementById("btnAventura");
-btnAventura.addEventListener("click", () => carregarListaPorCategoria("adventure"));
-
-
-
+let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
 let offset = 0; // Variável para controlar o offset na API
 
-// Função para carregar a lista de animes com um offset específico
-function carregarLista(offsetValue) {
-    offset = offsetValue;
-    fetch(`https://kitsu.io/api/edge/anime?page[limit]=20&page[offset]=${offset}`)
-        .then((resp) => resp.json())
-        .then((dados) => {
-            const animes = dados.data;
-            const col = document.getElementById("animes");
-            col.innerHTML= "";
-            renderizarListaDeAnimes(animes);
-        })
-        .catch((erro) => console.error(erro));
+// Função para carregar a lista de animes com base na categoria, offset e termo de pesquisa
+async function carregarListaPorCategoriaEOffset(_categoria, _offsetValue, _searchTerm) {
+    let url = `https://kitsu.io/api/edge/anime?filter[categories]=${_categoria}&page[limit]=20&page[offset]=${_offsetValue}`;
+
+    const Term = _searchTerm;
+    
+        if (Term.length > 0) {
+            alert(oi)
+            url = `https://kitsu.io/api/edge/anime?&filter[text]=${Term}&page[limit]=20&page[offset]=${offsetValue}`;
+        
+        }
+    alert(ola)
+    await fetch(url)
+            .then((resp) => resp.json())
+            .then((dados) => {
+                const animes = dados.data;
+                alert(animes)
+                const col = document.getElementById("animes");
+                col.innerHTML = "";
+                renderizarListaDeAnimes(animes);
+            })
+            .catch((erro) => console.error(erro));
 }
 
-// Função para carregar a próxima lista de animes
+// Função para pesquisar ao clicar no botão "Pesquisar"
+function pesquisar() {
+    const searchTerm = document.getElementById("searchInput").value;
+    offset = 0;
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
+}
+
+// Adiciona ouvinte de evento ao botão "Pesquisar"
+const btnSearch = document.getElementById("btnSearch");
+btnSearch.addEventListener("click", pesquisar);
+
+// Função para carregar a próxima lista de animes mantendo a categoria
 function carregarProximaLista() {
     offset += 20; // Incrementa o offset para obter a próxima página
-    carregarLista(offset);
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
 }
 
-// Função para carregar a lista anterior de animes
+// Função para carregar a lista anterior de animes mantendo a categoria
 function carregarListaAnterior() {
     offset -= 20; // Decrementa o offset para obter a lista anterior
     if (offset < 0) {
         offset = 0; // Garante que o offset não seja negativo
     }
-    carregarLista(offset);
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
 }
 
 // Adiciona ouvintes de eventos aos botões "Próximo" e "Anterior"
@@ -54,6 +57,29 @@ const btnPrevious = document.getElementById("btnPrevious");
 
 btnNext.addEventListener("click", carregarProximaLista);
 btnPrevious.addEventListener("click", carregarListaAnterior);
+
+// Adiciona um ouvinte de evento para cada botão de categoria
+const btnAventura = document.getElementById("btnAventura");
+btnAventura.addEventListener("click", () => {
+    categoriaAtual = "aventura";
+    offset = 0;
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
+});
+
+const btnAcao = document.getElementById("btnAcao");
+btnAcao.addEventListener("click", () => {
+    categoriaAtual = "acao";
+    offset = 0;
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
+});
+
+const btnRomance = document.getElementById("btnRomance");
+btnRomance.addEventListener("click", () => {
+    categoriaAtual = "romance";
+    offset = 0;
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
+});
+
 
 
 // Função para adicionar anime aos favoritos
@@ -86,10 +112,10 @@ function renderizarListaDeAnimes(animes) {
 
 
 // Chamada à API e renderização da lista de animes
-fetch("https://kitsu.io/api/edge/anime?page[limit]=20&page[offset]=0")
+fetch("https://kitsu.io/api/edge/anime?filter[categories]=${categoria}&page[limit]=20&page[offset]=${offsetValue}")
     .then((resp) => resp.json())
-    .then((dados) => {
-        const animes = dados.data;
+    .then(async(dados) => {
+        const animes = await dados.data;
         renderizarListaDeAnimes(animes);
     })
     .catch((erro) => console.error(erro));
