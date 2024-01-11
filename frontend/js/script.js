@@ -1,33 +1,45 @@
 let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
 let offset = 0; // Variável para controlar o offset na API
+let searchTerm = ""; // Variável para armazenar o termo de pesquisa
 
 // Função para carregar a lista de animes com base na categoria, offset e termo de pesquisa
-async function carregarListaPorCategoriaEOffset(_categoria, _offsetValue, _searchTerm) {
-    let url = `https://kitsu.io/api/edge/anime?filter[categories]=${_categoria}&page[limit]=20&page[offset]=${_offsetValue}`;
+function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
+    const baseurl = "https://kitsu.io/api/edge/anime";
+    const limit = 20;
 
-    const Term = _searchTerm;
-    
-        if (Term.length > 0) {
-            alert(oi)
-            url = `https://kitsu.io/api/edge/anime?&filter[text]=${Term}&page[limit]=20&page[offset]=${offsetValue}`;
-        
-        }
-    alert(ola)
-    await fetch(url)
-            .then((resp) => resp.json())
-            .then((dados) => {
-                const animes = dados.data;
-                alert(animes)
-                const col = document.getElementById("animes");
-                col.innerHTML = "";
-                renderizarListaDeAnimes(animes);
-            })
-            .catch((erro) => console.error(erro));
+    const searchTermParam = term ? `&filter[text]=${term}` : ""; 
+    const url = `${baseurl}?filter[categories]=${categoria}&page[limit]=${limit}&page[offset]=${Math.max(offsetValue, 0)}${searchTermParam}`;
+    console.log("URL:", url);
+
+    fetch(url)
+        .then((resp) => resp.json())
+        .then((dados) => {
+            const animes = dados.data;
+            const col = document.getElementById("animes");
+            col.innerHTML = "";
+            renderizarListaDeAnimes(animes);
+        })
+        .catch((erro) => console.error(erro));
+}
+
+// Função para carregar a próxima lista de animes mantendo a categoria e a pesquisa
+function carregarProximaLista() {
+    offset += 20; // Incrementa o offset para obter a próxima página
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
+}
+
+// Função para carregar a lista anterior de animes mantendo a categoria e a pesquisa
+function carregarListaAnterior() {
+    offset -= 20; // Decrementa o offset para obter a lista anterior
+    if (offset < 0) {
+        offset = 0; // Garante que o offset não seja negativo
+    }
+    carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
 }
 
 // Função para pesquisar ao clicar no botão "Pesquisar"
 function pesquisar() {
-    const searchTerm = document.getElementById("searchInput").value;
+    searchTerm = document.getElementById("searchInput").value;
     offset = 0;
     carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
 }
@@ -36,27 +48,20 @@ function pesquisar() {
 const btnSearch = document.getElementById("btnSearch");
 btnSearch.addEventListener("click", pesquisar);
 
-// Função para carregar a próxima lista de animes mantendo a categoria
-function carregarProximaLista() {
-    offset += 20; // Incrementa o offset para obter a próxima página
-    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
-}
-
-// Função para carregar a lista anterior de animes mantendo a categoria
-function carregarListaAnterior() {
-    offset -= 20; // Decrementa o offset para obter a lista anterior
-    if (offset < 0) {
-        offset = 0; // Garante que o offset não seja negativo
-    }
-    carregarListaPorCategoriaEOffset(categoriaAtual, offset);
-}
-
 // Adiciona ouvintes de eventos aos botões "Próximo" e "Anterior"
 const btnNext = document.getElementById("btnNext");
 const btnPrevious = document.getElementById("btnPrevious");
+const inputText = document.getElementById("searchInput");
 
 btnNext.addEventListener("click", carregarProximaLista);
 btnPrevious.addEventListener("click", carregarListaAnterior);
+inputText.addEventListener("keypress", (event) => {
+    
+        if (event.key == 'Enter') {
+            pesquisar()
+        };
+});
+
 
 // Adiciona um ouvinte de evento para cada botão de categoria
 const btnAventura = document.getElementById("btnAventura");

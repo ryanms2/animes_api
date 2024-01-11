@@ -7,6 +7,10 @@ body {
     background-color: #1A1A1A;
 }
 
+#searchInput {
+    width: 30%;
+}
+
 .col{
     margin-bottom: 5px;
 }
