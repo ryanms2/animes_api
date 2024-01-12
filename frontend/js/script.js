@@ -88,10 +88,10 @@ btnRomance.addEventListener("click", () => {
 
 
 // Função para adicionar anime aos favoritos
-/*function adicionarAosFavoritos(animeId, titulo) {
+function animesFavoritos(animeId, titulo) {
     // Implemente a lógica para adicionar ao banco de dados ou à API de favoritos
-    console.log(`Adicionando ${titulo} aos favoritos com ID ${animeId}`);
-} */
+    
+} 
 
 // Função para renderizar a lista de animes
 function renderizarListaDeAnimes(animes) {
