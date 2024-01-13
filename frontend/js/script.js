@@ -87,11 +87,48 @@ btnRomance.addEventListener("click", () => {
 
 
 
-// Função para adicionar anime aos favoritos
-function animesFavoritos(animeId, titulo) {
-    // Implemente a lógica para adicionar ao banco de dados ou à API de favoritos
+// Adiciona um ouvinte de evento para todos os botões "Adicionar"
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("btnAdicionar")) {
+        const nomeAnime = event.target.dataset.nome;
+        const imagemAnime = event.target.dataset.imagem;
+        adicionarAnimeFavorito(nomeAnime, imagemAnime);
+    }
+});
+
+// Função para enviar dados do anime para a API
+// Função para enviar dados do anime para a API
+async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
+    const apiUrl = "http://localhost:3000/api/animes/";
+    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwMTU0NTU2MH0.1UVP26-KViRsxWiTsyZ2NPkci6abHierbcHJyfQQyn0"; // Substitua pelo seu token
     
-} 
+    const corpoRequisicao = {
+        titulo: nomeAnime,
+        imagem: imagemAnime
+        // Adicione outros campos necessários
+    };
+
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}` // Adiciona o token Bearer aos cabeçalhos
+            // Adicione quaisquer outros cabeçalhos necessários
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+    console.log(configuracaoRequisicao)
+    await fetch(apiUrl, {configuracaoRequisicao})
+        .then((resp) => {
+            if (!resp.ok) {
+                throw new Error("Erro ao adicionar anime favorito");
+            }
+            console.log("Anime favorito adicionado com sucesso!");
+        })
+        .catch((erro) => console.error(erro));
+}
+
+
 
 // Função para renderizar a lista de animes
 function renderizarListaDeAnimes(animes) {
@@ -107,7 +144,11 @@ function renderizarListaDeAnimes(animes) {
                 <img class="card-img-top" alt="..." src="${anime.posterImage.original}" style="height: 250px;" >
                 <div class="card-body">
                     <h5 class="card-title">${anime.titles.en || anime.titles.en_jp}</h5>
-                    <a href="#" class="btn btn-primary" onclick="adicionarAosFavoritos(${animes[i].id}, '${anime.titles.en_jp}')">Adicionar</a>
+                    <button class="btn btn-primary btnAdicionar"
+                    data-nome="${animes[i].attributes.titles.en || animes[i].attributes.titles.en_jp}"
+                    data-imagem="${animes[i].attributes.posterImage.original}">
+                Adicionar
+            </button>
                 </div>
             </div>`;
 
