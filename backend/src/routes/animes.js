@@ -14,7 +14,9 @@ animeController.selectAnime);
 router.post("/animes",
 usuarioMiddleware.checkToken,
 animesMiddleware.validaTitulo,
-animeController.createAnime);
+animeController.checkAdd,
+animeController.createAnime
+);
 
 router.delete("/animes/:id",
 usuarioMiddleware.checkToken,

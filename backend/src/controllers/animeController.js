@@ -8,8 +8,20 @@ const getAll = async (_req, res) => {
 
 const createAnime = async (req, res) => {
     const createdAnime = await animesModel.createAnime(req.body);
-
+    
     return res.status(201).json(createdAnime);
+};
+
+const checkAdd = async (req, res, next) => {
+    const rec = await animesModel.checkAdded(req.body);
+    
+    if (rec.message === "esse anime já foi adicionado") {
+        return res.status(200).json(rec);
+        
+    } else {
+        next();
+    };
+    
 };
 
 const deleteAnime = async (req, res) => {
@@ -42,5 +54,6 @@ module.exports = {
     createAnime,
     deleteAnime,
     updateAnime,
-    selectAnime
+    selectAnime,
+    checkAdd
 };

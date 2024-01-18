@@ -20,29 +20,29 @@ function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
             renderizarListaDeAnimes(animes);
         })
         .catch((erro) => console.error(erro));
-}
+};
 
 // Função para carregar a próxima lista de animes mantendo a categoria e a pesquisa
 function carregarProximaLista() {
     offset += 20; // Incrementa o offset para obter a próxima página
     carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
-}
+};
 
 // Função para carregar a lista anterior de animes mantendo a categoria e a pesquisa
 function carregarListaAnterior() {
     offset -= 20; // Decrementa o offset para obter a lista anterior
     if (offset < 0) {
         offset = 0; // Garante que o offset não seja negativo
-    }
+    };
     carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
-}
+};
 
 // Função para pesquisar ao clicar no botão "Pesquisar"
 function pesquisar() {
     searchTerm = document.getElementById("searchInput").value;
     offset = 0;
     carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
-}
+};
 
 // Adiciona ouvinte de evento ao botão "Pesquisar"
 const btnSearch = document.getElementById("btnSearch");
@@ -93,40 +93,60 @@ document.addEventListener("click", function (event) {
         const nomeAnime = event.target.dataset.nome;
         const imagemAnime = event.target.dataset.imagem;
         adicionarAnimeFavorito(nomeAnime, imagemAnime);
-    }
+    };
 });
 
 // Função para enviar dados do anime para a API
-// Função para enviar dados do anime para a API
 async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
     const apiUrl = "http://localhost:3000/api/animes/";
-    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwMTU0NTU2MH0.1UVP26-KViRsxWiTsyZ2NPkci6abHierbcHJyfQQyn0"; // Substitua pelo seu token
+    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
     
     const corpoRequisicao = {
         titulo: nomeAnime,
         imagem: imagemAnime
-        // Adicione outros campos necessários
     };
 
     const configuracaoRequisicao = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${tokenBearer}` // Adiciona o token Bearer aos cabeçalhos
-            // Adicione quaisquer outros cabeçalhos necessários
+            "Authorization": `Bearer ${tokenBearer}`
         },
         body: JSON.stringify(corpoRequisicao)
     };
-    console.log(configuracaoRequisicao)
-    await fetch(apiUrl, {configuracaoRequisicao})
-        .then((resp) => {
-            if (!resp.ok) {
-                throw new Error("Erro ao adicionar anime favorito");
-            }
-            console.log("Anime favorito adicionado com sucesso!");
-        })
-        .catch((erro) => console.error(erro));
-}
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        if (!resp.ok) {
+            throw new Error("Erro ao adicionar anime favorito");
+        };
+
+        const data = await resp.json();
+        console.log(data)
+        exibirAlerta(data.message);
+    } catch (erro) {
+        console.error(erro);
+        exibirAlerta("Erro ao adicionar anime favorito");
+    };
+};
+
+function exibirAlerta(mensagem) {
+    
+    const alerta = document.createElement("div");
+    
+    if (mensagem === "esse anime já foi adicionado") {
+        alerta.id = "add"
+    }
+    alerta.className = "alerta animate__animated animate__jello";
+    alerta.textContent = mensagem;
+    document.body.appendChild(alerta);
+    
+    setTimeout(() => {
+        document.body.removeChild(alerta);
+    }, 2000);
+};
+
 
 
 

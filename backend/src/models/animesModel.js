@@ -8,14 +8,34 @@ const getAll = async () => {
 
 const createAnime = async (anime) => {
     const { titulo, imagem } = anime;
-
     const dataUTC = new Date(Date.now()).toUTCString();
 
     const query = 'INSERT INTO animes (titulo, imagem, criado_em) VALUES (?, ?, ?)';
+    try {
+       const [createdAnime] = await connection.execute(query, [titulo, imagem, dataUTC]); 
 
-    const [createdAnime] = await connection.execute(query, [titulo, imagem, dataUTC]);
+       return {message: "anime adicionado com sucesso"};
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-    return {insertId: createdAnime.insertId};
+const checkAdded = async (anime) => {
+    const { titulo } = anime;
+
+    const query = 'SELECT titulo FROM animes WHERE titulo= ?';
+    
+    try {
+       const [verify] = await connection.execute(query, [titulo]);
+        
+       if (verify.length > 0) {
+        return {message: "esse anime já foi adicionado"};
+       } else {
+        return {pass: 1};
+       }
+    } catch (error) {
+        
+    }
 };
 
 const deleteAnime = async (id) => {
@@ -48,5 +68,6 @@ module.exports = {
     createAnime,
     deleteAnime,
     updateAnime,
-    selectAnime
+    selectAnime,
+    checkAdded
 };
