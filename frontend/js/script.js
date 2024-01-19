@@ -124,9 +124,46 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
 
         const data = await resp.json();
         console.log(data)
-        exibirAlerta(data.message);
+        if (!data.insertId) {
+           exibirAlerta(data.message);
+           return;
+        }
+        addFavorito(data.insertId);
+        
     } catch (erro) {
         console.error(erro);
+        exibirAlerta("Erro ao adicionar anime favorito");
+    };
+};
+
+async function addFavorito(id) {
+    const apiUrl = "http://localhost:3000/api/usuario/addAnime";
+    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
+    
+    const corpoRequisicao = {
+        idAnime: id
+    };
+    console.log(corpoRequisicao)
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        if (!resp.ok) {
+            throw new Error("Erro ao adicionar anime favorito");
+
+        };
+        const data = await resp.json();
+        exibirAlerta(data.message);
+    } catch (error) {
+        console.error(error);
         exibirAlerta("Erro ao adicionar anime favorito");
     };
 };
@@ -135,9 +172,9 @@ function exibirAlerta(mensagem) {
     
     const alerta = document.createElement("div");
     
-    if (mensagem === "esse anime já foi adicionado") {
+    if (mensagem === "esse anime já foi adicionado" || "Erro ao adicionar o anime.") {
         alerta.id = "add"
-    }
+    };
     alerta.className = "alerta animate__animated animate__jello";
     alerta.textContent = mensagem;
     document.body.appendChild(alerta);
@@ -173,7 +210,7 @@ function renderizarListaDeAnimes(animes) {
             </div>`;
 
         col.appendChild(card);
-    }
+    };
 };
 
 

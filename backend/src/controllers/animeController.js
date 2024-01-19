@@ -10,6 +10,7 @@ const createAnime = async (req, res) => {
     const createdAnime = await animesModel.createAnime(req.body);
     
     return res.status(201).json(createdAnime);
+
 };
 
 const checkAdd = async (req, res, next) => {

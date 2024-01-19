@@ -13,8 +13,8 @@ const createAnime = async (anime) => {
     const query = 'INSERT INTO animes (titulo, imagem, criado_em) VALUES (?, ?, ?)';
     try {
        const [createdAnime] = await connection.execute(query, [titulo, imagem, dataUTC]); 
-
-       return {message: "anime adicionado com sucesso"};
+       const id = createdAnime.insertId;
+       return {message: "anime adicionado com sucesso", insertId: id};
     } catch (error) {
         console.log(error);
     }
