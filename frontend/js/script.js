@@ -184,7 +184,9 @@ function exibirAlerta(mensagem) {
     }, 2000);
 };
 
-
+async function animesFavoritos() {
+    
+}
 
 
 // Função para renderizar a lista de animes
