@@ -3,9 +3,9 @@ const animeController = require("../controllers/animeController");
 const animesMiddleware = require("../middlewares/animesMiddleware");
 const usuarioMiddleware = require("../middlewares/usuarioMiddleware");
 
-router.get("/animes",
+router.post("/animesFavoritos",
 usuarioMiddleware.checkToken,
-animeController.getAll);
+animeController.getAllAnimesF);
 
 router.get("/animes/:id",
 usuarioMiddleware.checkToken,

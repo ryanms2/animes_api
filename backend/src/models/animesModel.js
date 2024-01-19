@@ -1,9 +1,16 @@
 const connection = require("../db/conn");
 
-const getAll = async () => {
-    const [ animes ] = await connection.execute("SELECT * FROM animes");
+const getAllAnimesF = async (idUser) => {
+    const id_User = idUser;
 
-    return animes;
+    const query = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario= ?';
+    const [idAnimesF] = await connection.execute(query, [id_User]);
+    const idAnimes = (idAnimesF) => idAnimesF.id_anime;
+    const obtIdAnimes = idAnimesF.map(idAnimes);
+    const queryOne = `SELECT * FROM animes WHERE id IN (${obtIdAnimes})`;
+    const [animesF] = await connection.execute(queryOne);
+
+    return animesF;
 };
 
 const createAnime = async (anime) => {
@@ -64,7 +71,7 @@ const selectAnime = async (id) => {
 }
 
 module.exports = {
-    getAll,
+    getAllAnimesF,
     createAnime,
     deleteAnime,
     updateAnime,

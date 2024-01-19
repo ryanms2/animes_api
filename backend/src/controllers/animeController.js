@@ -1,8 +1,15 @@
 const animesModel = require("../models/animesModel");
 
-const getAll = async (_req, res) => {
+const getAllAnimesF = async (req, res) => {
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-    const animes = await animesModel.getAll();
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+    const animes = await animesModel.getAllAnimesF(decodedId);
     return res.status(200).json(animes);
 };
 
@@ -15,7 +22,6 @@ const createAnime = async (req, res) => {
 
 const checkAdd = async (req, res, next) => {
     const rec = await animesModel.checkAdded(req.body);
-    
     if (rec.message === "esse anime já foi adicionado") {
         return res.status(200).json(rec);
         
@@ -51,7 +57,7 @@ const selectAnime = async (req, res) => {
 }
 
 module.exports = {
-    getAll,
+    getAllAnimesF,
     createAnime,
     deleteAnime,
     updateAnime,

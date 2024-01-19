@@ -123,7 +123,6 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
         };
 
         const data = await resp.json();
-        console.log(data)
         if (!data.insertId) {
            exibirAlerta(data.message);
            return;
@@ -171,8 +170,8 @@ async function addFavorito(id) {
 function exibirAlerta(mensagem) {
     
     const alerta = document.createElement("div");
-    
-    if (mensagem === "esse anime já foi adicionado" || "Erro ao adicionar o anime.") {
+    alerta.className = "alerta";
+    if (mensagem === "esse anime já foi adicionado" || mensagem ===  "Erro ao adicionar o anime." || mensagem ===  "Erro ao adicionar anime favorito" || mensagem === "Erro ao exibir animes favoritos") {
         alerta.id = "add"
     };
     alerta.className = "alerta animate__animated animate__jello";
@@ -181,12 +180,59 @@ function exibirAlerta(mensagem) {
     
     setTimeout(() => {
         document.body.removeChild(alerta);
-    }, 2000);
+    }, 2500);
 };
 
+const btnAnimesF = document.getElementById("animesFavoritos");
+btnAnimesF.addEventListener("click", () => animesFavoritos());
+
 async function animesFavoritos() {
+    const apiUrl = "http://localhost:3000/api/animesFavoritos";
+    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
     
-}
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        }
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        if (!resp.ok) {
+            throw new Error("Erro ao adicionar anime favorito");
+
+        };
+        const data = await resp.json();
+        const col = document.getElementById("animes");
+        col.innerHTML = "";
+        renderizarListaDeAnimesFavoritos(data);
+    } catch (error) {
+        console.log(error);
+        exibirAlerta("Erro ao exibir animes favoritos");
+    };
+};
+
+function renderizarListaDeAnimesFavoritos(animes) {
+    const col = document.getElementById("animes");
+    const animesF = animes;
+    for (let i = 0; i < animesF.length; i++) {
+        
+        const card = document.createElement("div");
+        card.className = "col";
+        card.innerHTML = `
+            <div class="card">
+                <img class="card-img-top" alt="..." src="${animesF[i].imagem}" style="height: 250px;" >
+                <div class="card-body">
+                    <h5 class="card-title">${animesF[i].titulo}</h5>
+                </div>
+            </div>`;
+
+        col.appendChild(card);
+    };
+};
 
 
 // Função para renderizar a lista de animes
