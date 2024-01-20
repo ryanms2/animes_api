@@ -1,5 +1,5 @@
 let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
-let offset = 0; // Variável para controlar o offset na API
+let offset = 20; // Variável para controlar o offset na API
 let searchTerm = ""; // Variável para armazenar o termo de pesquisa
 
 // Função para carregar a lista de animes com base na categoria, offset e termo de pesquisa
@@ -11,12 +11,15 @@ function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
     const url = `${baseurl}?filter[categories]=${categoria}&page[limit]=${limit}&page[offset]=${Math.max(offsetValue, 0)}${searchTermParam}`;
     console.log("URL:", url);
 
+    
     fetch(url)
         .then((resp) => resp.json())
         .then((dados) => {
             const animes = dados.data;
             const col = document.getElementById("animes");
             col.innerHTML = "";
+            btnNext.style.display = "";
+            btnPrevious.style.display = "";
             renderizarListaDeAnimes(animes);
         })
         .catch((erro) => console.error(erro));
@@ -24,6 +27,7 @@ function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
 
 // Função para carregar a próxima lista de animes mantendo a categoria e a pesquisa
 function carregarProximaLista() {
+    console.log(offset)
     offset += 20; // Incrementa o offset para obter a próxima página
     carregarListaPorCategoriaEOffset(categoriaAtual, offset, searchTerm);
 };
@@ -52,6 +56,9 @@ btnSearch.addEventListener("click", pesquisar);
 const btnNext = document.getElementById("btnNext");
 const btnPrevious = document.getElementById("btnPrevious");
 const inputText = document.getElementById("searchInput");
+const btnInicio = document.getElementById("inicio");
+
+btnInicio.addEventListener("click", renderizarListaDeAnimes);
 
 btnNext.addEventListener("click", carregarProximaLista);
 btnPrevious.addEventListener("click", carregarListaAnterior);
@@ -218,6 +225,10 @@ async function animesFavoritos() {
 function renderizarListaDeAnimesFavoritos(animes) {
     const col = document.getElementById("animes");
     const animesF = animes;
+    const btnNext = document.getElementById("btnNext");
+    const btnPrevious = document.getElementById("btnPrevious");
+    btnNext.style.display = "none";
+    btnPrevious.style.display = "none";
     for (let i = 0; i < animesF.length; i++) {
         
         const card = document.createElement("div");
