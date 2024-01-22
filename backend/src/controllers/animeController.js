@@ -10,6 +10,7 @@ const getAllAnimesF = async (req, res) => {
     const decoded = jwt.verify(token, secret);
     const decodedId = decoded.id;
     const animes = await animesModel.getAllAnimesF(decodedId);
+    
     return res.status(200).json(animes);
 };
 

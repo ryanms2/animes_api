@@ -5,10 +5,16 @@ const getAllAnimesF = async (idUser) => {
 
     const query = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario= ?';
     const [idAnimesF] = await connection.execute(query, [id_User]);
+    
+    if (idAnimesF.length == 0) {
+        return {message: "Você não tem animes favoritos"};
+    };
+
     const idAnimes = (idAnimesF) => idAnimesF.id_anime;
     const obtIdAnimes = idAnimesF.map(idAnimes);
     const queryOne = `SELECT * FROM animes WHERE id IN (${obtIdAnimes})`;
     const [animesF] = await connection.execute(queryOne);
+    
 
     return animesF;
 };

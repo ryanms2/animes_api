@@ -213,6 +213,9 @@ async function animesFavoritos() {
 
         };
         const data = await resp.json();
+        if (data.message) {
+            return exibirAlerta(data.message);
+        };
         const col = document.getElementById("animes");
         col.innerHTML = "";
         renderizarListaDeAnimesFavoritos(data);
