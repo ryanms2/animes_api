@@ -1,0 +1,11 @@
+#login-form,
+#signup-form {
+    width: 300px;
+    margin: auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

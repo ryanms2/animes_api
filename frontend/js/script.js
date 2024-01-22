@@ -1,3 +1,79 @@
+function showSignUpForm() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+};
+
+function showLoginForm() {
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+};
+
+async function login() {
+    // Implement your login logic here
+    alert('Login clicked!');
+    const apiUrl = "http://localhost:3000/api/usuario/login";
+    const inputEmail = document.getElementById("email").value;
+    const inputSenha = document.getElementById("senha").value;
+
+    
+    const corpoRequisicao = {
+        email: inputEmail,
+        senha: inputSenha
+    };
+    console.log(corpoRequisicao)
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        if (!resp.ok) {
+            throw new Error("Erro ao adicionar anime favorito");
+        };
+
+        const data = await resp.json();
+        console.log(data)
+    } catch (error) {
+        
+    }
+};
+
+async function signUp() {
+    // Implement your sign-up logic here
+    alert('Sign Up clicked!');
+    const apiUrl = "http://localhost:3000/api/usuario/registro";
+    const inputNome = document.getElementById("novo-nome").value;
+    const inputEmail = document.getElementById("novo-email").value;
+    const inputSenha = document.getElementById("nova-senha").value;
+
+    
+    const corpoRequisicao = {
+        nome: inputNome,
+        email: inputEmail,
+        senha: inputSenha
+    };
+    const configuracaoRequisicao = {
+        method: "POST",
+        body: JSON.stringify(corpoRequisicao)
+    };
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+        exibirAlerta(data.message)
+        console.log(data)
+    } catch (error) {
+        
+    }
+};
+
+
 let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
 let offset = 20; // Variável para controlar o offset na API
 let searchTerm = ""; // Variável para armazenar o termo de pesquisa

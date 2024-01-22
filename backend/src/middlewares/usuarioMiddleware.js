@@ -16,8 +16,8 @@ const validaUsuario = async(req, res, next) => {
 
 
 const validaEmail = (req, res, next) => {
-    const {body} = req;
-
+    const body = req;
+    console.log(body)
     if (body.email == undefined || !body.email || body.email < 12) {
 
         return res.status(409).json({message: "Insira um email válido!"});
