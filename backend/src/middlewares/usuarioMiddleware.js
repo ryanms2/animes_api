@@ -16,8 +16,7 @@ const validaUsuario = async(req, res, next) => {
 
 
 const validaEmail = (req, res, next) => {
-    const body = req;
-    console.log(body)
+    const {body} = req;
     if (body.email == undefined || !body.email || body.email < 12) {
 
         return res.status(409).json({message: "Insira um email válido!"});
@@ -97,11 +96,11 @@ const validaSenhaRedefinir = async(req, res, next) => {
     const {body} = req;
 
     if (body.senha == undefined || !body.senha || body.senha.length < 6) {
-        return res.status(409).json({message: "Insira uma senha válida."});
+        return res.status(409).json({message: "Insira uma senha válida!"});
     };
 
     if (body.repitaSenha == undefined || !body.repitaSenha) {
-        return res.status(409).json({message: "repita senha inválido, insira novamente."});
+        return res.status(409).json({message: "As senhas estão diferentes, tente novamente."});
     };
 
     if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha.length < 6) {

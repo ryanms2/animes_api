@@ -1,3 +1,8 @@
+body {
+    background-color: #1A1A1A;
+    color: white;
+}
+
 #login-form,
 #signup-form {
     width: 300px;
@@ -8,4 +13,18 @@ form {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.alerta {
+    position: fixed;
+    top: 10px;
+    right: 40%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#add {
+    background-color: red;
 }

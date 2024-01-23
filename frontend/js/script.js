@@ -9,8 +9,7 @@ function showLoginForm() {
 };
 
 async function login() {
-    // Implement your login logic here
-    alert('Login clicked!');
+
     const apiUrl = "http://localhost:3000/api/usuario/login";
     const inputEmail = document.getElementById("email").value;
     const inputSenha = document.getElementById("senha").value;
@@ -20,12 +19,10 @@ async function login() {
         email: inputEmail,
         senha: inputSenha
     };
-    console.log(corpoRequisicao)
     const configuracaoRequisicao = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${tokenBearer}`
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(corpoRequisicao)
     };
@@ -33,44 +30,52 @@ async function login() {
     try {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
-        if (!resp.ok) {
-            throw new Error("Erro ao adicionar anime favorito");
-        };
-
         const data = await resp.json();
-        console.log(data)
+        const token = data.token;
+        sessionStorage.setItem('token', token);
+
+        exibirAlerta(data.message);
     } catch (error) {
-        
-    }
+        console.log(error);
+        exibirAlerta("Erro ao fazer o login, tente novamente.");
+    };
 };
 
 async function signUp() {
-    // Implement your sign-up logic here
-    alert('Sign Up clicked!');
+    
     const apiUrl = "http://localhost:3000/api/usuario/registro";
     const inputNome = document.getElementById("novo-nome").value;
     const inputEmail = document.getElementById("novo-email").value;
     const inputSenha = document.getElementById("nova-senha").value;
-
+    const inputRSenha = document.getElementById("Rnova-senha").value;
     
     const corpoRequisicao = {
         nome: inputNome,
         email: inputEmail,
-        senha: inputSenha
+        senha: inputSenha,
+        repitaSenha: inputRSenha
     };
     const configuracaoRequisicao = {
         method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(corpoRequisicao)
     };
+        
     try {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
-        exibirAlerta(data.message)
-        console.log(data)
+        document.getElementById("novo-nome").value = "";
+        document.getElementById("novo-email").value = "";
+        document.getElementById("nova-senha").value = "";
+        document.getElementById("Rnova-senha").value = "";
+        exibirAlerta(data.message);
     } catch (error) {
-        
-    }
+      console.log(error);
+      exibirAlerta("Erro ao criar conta. Por favor, tente novamente.");
+    };
 };
 
 
@@ -180,10 +185,15 @@ document.addEventListener("click", function (event) {
 });
 
 // Função para enviar dados do anime para a API
-async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
+async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {   
     const apiUrl = "http://localhost:3000/api/animes/";
-    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
-    
+    const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
+    console.log(tokenBearer)
+    if (tokenBearer === null) {
+        // Redirecionar para a página de login
+        window.location.href = 'conta.html';
+        return;
+    };
     const corpoRequisicao = {
         titulo: nomeAnime,
         imagem: imagemAnime
@@ -220,7 +230,7 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
 
 async function addFavorito(id) {
     const apiUrl = "http://localhost:3000/api/usuario/addAnime";
-    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
+    const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
     
     const corpoRequisicao = {
         idAnime: id
@@ -254,9 +264,29 @@ function exibirAlerta(mensagem) {
     
     const alerta = document.createElement("div");
     alerta.className = "alerta";
-    if (mensagem === "esse anime já foi adicionado" || mensagem ===  "Erro ao adicionar o anime." || mensagem ===  "Erro ao adicionar anime favorito" || mensagem === "Erro ao exibir animes favoritos") {
-        alerta.id = "add"
-    };
+    const mensagensErro = [
+        "esse anime já foi adicionado",
+        "Erro ao adicionar o anime.",
+        "Erro ao adicionar anime favorito",
+        "Erro ao exibir animes favoritos",
+        "Insira um email válido!",
+        "O usuário já existe.",
+        "Insira uma senha válida!",
+        "As senhas estão diferentes, tente novamente.",
+        "O nome não pode ser vazio.",
+        "O nome deve ter os caracteres minimos.",
+        "O usuário não foi encontrado.",
+        "Senha incorreta",
+        "Insira uma nova senha válida.",
+        "As senhas devem ser iguais.",
+        "Erro ao fazer o login, tente novamente.",
+        "Erro ao criar conta. Por favor, tente novamente."
+      ];
+      
+      if (mensagensErro.includes(mensagem)) {
+        alerta.id = "add";
+      };
+      
     alerta.className = "alerta animate__animated animate__jello";
     alerta.textContent = mensagem;
     document.body.appendChild(alerta);
@@ -271,7 +301,7 @@ btnAnimesF.addEventListener("click", () => animesFavoritos());
 
 async function animesFavoritos() {
     const apiUrl = "http://localhost:3000/api/animesFavoritos";
-    const tokenBearer = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBsYXlAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTcwNTM0Nzc4Mn0.gjOfST5ebUlmr-jBTeJcFRNlaTvvXBuF7MH1xbdhVpM"; // Substitua pelo seu token
+    const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
     
     const configuracaoRequisicao = {
         method: "POST",
