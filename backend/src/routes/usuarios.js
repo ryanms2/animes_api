@@ -15,7 +15,7 @@ usuarioMiddleware.emailExiste,
 usuarioMiddleware.validaSenhaLogin,
 usuarioController.login);
 
-router.get("/usuario/:id",
+router.post("/usuario/logado",
 usuarioMiddleware.usuarioExiste,
 usuarioMiddleware.checkToken,
 usuarioController.logado);

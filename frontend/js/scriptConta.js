@@ -1,0 +1,192 @@
+async function showInfoAccount() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('infoAccount').style.display = 'block';
+
+    const apiUrl = "http://localhost:3000/api/usuario/logado";
+    
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        }
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+        console.log(data)
+        if (data.message) {
+        exibirAlerta(data.message);
+            
+        };
+        
+        const infosUser = document.getElementById("infoUser");
+        infosUser.innerHTML = `<img src="" alt="">
+        <h2>${data[0].nome}</h2>
+        <p>${data[0].email}</p>`;
+    } catch (error) {
+        console.log(error);
+        exibirAlerta("Erro ao redefinir nome, tente novamente.");
+    };
+};
+const tokenBearer = sessionStorage.getItem('token');
+if (tokenBearer !== null) {
+    showInfoAccount()
+};
+
+function showLogin() {
+    document.getElementById('login').style.display = 'block';
+    document.getElementById('infoAccount').style.display = 'none';
+};
+
+if (tokenBearer === null) {
+    showLogin()
+};
+
+async function redefinirNome() {
+    const apiUrl = "http://localhost:3000/api/usuario/redefinirNome";
+    const inputNome = document.getElementById("nome").value;
+    const inputRNome = document.getElementById("repita-nome").value;
+
+    const corpoRequisicao = {
+        nome: inputNome,
+        repitaNome: inputRNome
+    };
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+
+        exibirAlerta(data.message);
+    } catch (error) {
+        console.log(error);
+        exibirAlerta("Erro ao redefinir nome, tente novamente.");
+    };
+};
+
+function showSignUpForm() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('signup-form').style.display = 'block';
+};
+
+function showLoginForm() {
+    document.getElementById('signup-form').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+};
+
+async function login() {
+
+    const apiUrl = "http://localhost:3000/api/usuario/login";
+    const inputEmail = document.getElementById("email").value;
+    const inputSenha = document.getElementById("senha").value;
+
+    
+    const corpoRequisicao = {
+        email: inputEmail,
+        senha: inputSenha
+    };
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+        const token = data.token;
+        sessionStorage.setItem('token', token);
+
+        window.location.href = 'index.html';
+    } catch (error) {
+        console.log(error);
+        exibirAlerta("Erro ao fazer o login, tente novamente.");
+    };
+};
+
+async function signUp() {
+    
+    const apiUrl = "http://localhost:3000/api/usuario/registro";
+    const inputNome = document.getElementById("novo-nome").value;
+    const inputEmail = document.getElementById("novo-email").value;
+    const inputSenha = document.getElementById("nova-senha").value;
+    const inputRSenha = document.getElementById("Rnova-senha").value;
+    
+    const corpoRequisicao = {
+        nome: inputNome,
+        email: inputEmail,
+        senha: inputSenha,
+        repitaSenha: inputRSenha
+    };
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+        
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+        document.getElementById("novo-nome").value = "";
+        document.getElementById("novo-email").value = "";
+        document.getElementById("nova-senha").value = "";
+        document.getElementById("Rnova-senha").value = "";
+        exibirAlerta(data.message);
+    } catch (error) {
+      console.log(error);
+      exibirAlerta("Erro ao criar conta. Por favor, tente novamente.");
+    };
+};
+
+function exibirAlerta(mensagem) {
+    
+    const alerta = document.createElement("div");
+    alerta.className = "alerta";
+    const mensagensErro = [
+        "esse anime já foi adicionado",
+        "Erro ao adicionar o anime.",
+        "Erro ao adicionar anime favorito",
+        "Erro ao exibir animes favoritos",
+        "Insira um email válido!",
+        "O usuário já existe.",
+        "Insira uma senha válida!",
+        "As senhas estão diferentes, tente novamente.",
+        "O nome não pode ser vazio.",
+        "O nome deve ter os caracteres minimos.",
+        "O usuário não foi encontrado.",
+        "Senha incorreta",
+        "Insira uma nova senha válida.",
+        "As senhas devem ser iguais.",
+        "Erro ao fazer o login, tente novamente.",
+        "Erro ao criar conta. Por favor, tente novamente."
+      ];
+      
+      if (mensagensErro.includes(mensagem)) {
+        alerta.id = "add";
+      };
+      
+    alerta.className = "alerta animate__animated animate__jello";
+    alerta.textContent = mensagem;
+    document.body.appendChild(alerta);
+    
+    setTimeout(() => {
+        document.body.removeChild(alerta);
+    }, 2500);
+};

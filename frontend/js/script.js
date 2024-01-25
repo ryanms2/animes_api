@@ -1,84 +1,3 @@
-function showSignUpForm() {
-    document.getElementById('login-form').style.display = 'none';
-    document.getElementById('signup-form').style.display = 'block';
-};
-
-function showLoginForm() {
-    document.getElementById('signup-form').style.display = 'none';
-    document.getElementById('login-form').style.display = 'block';
-};
-
-async function login() {
-
-    const apiUrl = "http://localhost:3000/api/usuario/login";
-    const inputEmail = document.getElementById("email").value;
-    const inputSenha = document.getElementById("senha").value;
-
-    
-    const corpoRequisicao = {
-        email: inputEmail,
-        senha: inputSenha
-    };
-    const configuracaoRequisicao = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(corpoRequisicao)
-    };
-
-    try {
-        const resp = await fetch(apiUrl, configuracaoRequisicao);
-
-        const data = await resp.json();
-        const token = data.token;
-        sessionStorage.setItem('token', token);
-
-        exibirAlerta(data.message);
-    } catch (error) {
-        console.log(error);
-        exibirAlerta("Erro ao fazer o login, tente novamente.");
-    };
-};
-
-async function signUp() {
-    
-    const apiUrl = "http://localhost:3000/api/usuario/registro";
-    const inputNome = document.getElementById("novo-nome").value;
-    const inputEmail = document.getElementById("novo-email").value;
-    const inputSenha = document.getElementById("nova-senha").value;
-    const inputRSenha = document.getElementById("Rnova-senha").value;
-    
-    const corpoRequisicao = {
-        nome: inputNome,
-        email: inputEmail,
-        senha: inputSenha,
-        repitaSenha: inputRSenha
-    };
-    const configuracaoRequisicao = {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(corpoRequisicao)
-    };
-        
-    try {
-        const resp = await fetch(apiUrl, configuracaoRequisicao);
-
-        const data = await resp.json();
-        document.getElementById("novo-nome").value = "";
-        document.getElementById("novo-email").value = "";
-        document.getElementById("nova-senha").value = "";
-        document.getElementById("Rnova-senha").value = "";
-        exibirAlerta(data.message);
-    } catch (error) {
-      console.log(error);
-      exibirAlerta("Erro ao criar conta. Por favor, tente novamente.");
-    };
-};
-
-
 let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
 let offset = 20; // Variável para controlar o offset na API
 let searchTerm = ""; // Variável para armazenar o termo de pesquisa
@@ -188,7 +107,6 @@ document.addEventListener("click", function (event) {
 async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {   
     const apiUrl = "http://localhost:3000/api/animes/";
     const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
-    console.log(tokenBearer)
     if (tokenBearer === null) {
         // Redirecionar para a página de login
         window.location.href = 'conta.html';

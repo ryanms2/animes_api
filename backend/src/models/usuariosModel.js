@@ -85,14 +85,7 @@ const redefinirNome = async(nome, id) => {
 
 const logado = async(id) => {
   const [user] = await connection.query('SELECT * FROM usuarios WHERE id = ?', [id]);
-  const queryAnimesAll = 'SELECT * FROM animes_favoritos_usuario WHERE id_usuario = ?';
-  //const [animesAll] = await connection.execute(queryAnimesAll, [user[0].id]);
-  //console.log(animesAll[0].id_anime);
-
-  //const query = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
-
-  //const [idAnime] = await connection.query('SELECT id FROM animes WHERE id = ?', [id]);
-
+  
   return user;
 };
 

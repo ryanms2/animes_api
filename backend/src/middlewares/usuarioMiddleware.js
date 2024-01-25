@@ -138,7 +138,11 @@ const validaSenhaRedefinir = async(req, res, next) => {
 const validaNomeRedefinir = (req, res, next) => {
     const {body} = req;
 
-    if (body.repitaNome == undefined || !body.repitaNome || body.repitaNome.length < 5) {
+    if (body.nome !== body.repitaNome) {
+        return res.status(409).json({message: "Os nomes estão diferentes, tente novamente."});
+    };
+
+    if (body.repitaNome == undefined || !body.repitaNome || body.repitaNome.length < 5 || body.nome == undefined) {
         return res.status(409).json({message: "Insira um nome válido."});
     };
 
@@ -171,11 +175,18 @@ const checkToken = (req, res, next) => {
   };
 
   const usuarioExiste = async(req, res, next) => {
-    const body = req.params.id;
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
 
     const connection = require("../db/conn");
     const query = 'SELECT * FROM usuarios WHERE id = ?';
-    const [user] = await connection.execute(query, [body]);
+    const [user] = await connection.execute(query, [decodedId]);
 
     if (user == '' || user == 0 || !user || user == undefined) {
         return res.status(404).json({message: "Usuário não existe."});

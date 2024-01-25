@@ -26,7 +26,33 @@
         </div>
       </nav>
 
-    <div class="container">
+      <div class="container" id="infoAccount">
+        <div id="infoUser">
+          
+        </div>
+        <div id="redefinir-nome">
+          <h4>redefinir nome</h4>
+          <form>
+            <label for="nome">nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="repita-nome">Repita o nome:</label>
+            <input type="text" id="repita-nome" name="repita-nome" required>
+          </form>
+        </div>
+        <div id="redefinir-senha">
+          <h4>redefinir senha</h4>
+          <form>
+            <label for="redefinir-senha">senha:</label>
+            <input type="password" id="redefinir-senha" name="redefinir-senha" required>
+
+            <label for="repita-redSenha">Repita a senha:</label>
+            <input type="password" id="repita-redSenha" name="repita-redSenha" required>
+          </form>
+        </div>
+      </div>
+
+    <div class="container" id="login">
         <div id="login-form">
             <h2>Login</h2>
             <form>
@@ -61,6 +87,6 @@
             <p>Já tem uma conta? <a href="" onclick="showLoginForm()">Entrar</a></p>
         </div>
     </div>
-    <script src="js/script.js" defer></script>
+    <script src="js/scriptConta.js" defer></script>
 </body>
 </html>
