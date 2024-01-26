@@ -45,6 +45,11 @@ if (tokenBearer === null) {
     showLogin()
 };
 
+const btnMudaNome = document.getElementById("mudaNome");
+const btnMudaSenha = document.getElementById("mudaSenha");
+
+btnMudaNome.addEventListener("click", ()=> redefinirNome());
+btnMudaSenha.addEventListener("click", ()=> redefinirSenha());
 async function redefinirNome() {
     const apiUrl = "http://localhost:3000/api/usuario/redefinirNome";
     const inputNome = document.getElementById("nome").value;
@@ -67,11 +72,42 @@ async function redefinirNome() {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
-
+        console.log(data)
         exibirAlerta(data.message);
     } catch (error) {
         console.log(error);
         exibirAlerta("Erro ao redefinir nome, tente novamente.");
+    };
+};
+
+async function redefinirSenha() {
+    const apiUrl = "http://localhost:3000/api/usuario/redefinirSenha";
+    const inputSenha = document.getElementById("redefinir-senha").value;
+    const inputRSenha = document.getElementById("repita-redSenha").value;
+    const inputNovaSenha = document.getElementById("novaSenha").value;
+
+    const corpoRequisicao = {
+        senha: inputSenha,
+        novaSenha: inputNovaSenha,
+        repitaSenha: inputRSenha
+    };
+    const configuracaoRequisicao = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        const data = await resp.json();
+        exibirAlerta(data.message);
+    } catch (error) {
+        console.log(error);
+        exibirAlerta("Erro ao redefinir a senha, tente novamente.");
     };
 };
 
@@ -175,7 +211,8 @@ function exibirAlerta(mensagem) {
         "Insira uma nova senha válida.",
         "As senhas devem ser iguais.",
         "Erro ao fazer o login, tente novamente.",
-        "Erro ao criar conta. Por favor, tente novamente."
+        "Erro ao criar conta. Por favor, tente novamente.",
+        "Os nomes estão diferentes, tente novamente."
       ];
       
       if (mensagensErro.includes(mensagem)) {

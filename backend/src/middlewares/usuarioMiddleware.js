@@ -95,7 +95,7 @@ const validaSenhaLogin = async(req, res, next) => {
 const validaSenhaRedefinir = async(req, res, next) => {
     const {body} = req;
 
-    if (body.senha == undefined || !body.senha || body.senha.length < 6) {
+    if (body.senha == undefined || !body.senha || body.senha.length < 5) {
         return res.status(409).json({message: "Insira uma senha válida!"});
     };
 
@@ -103,7 +103,7 @@ const validaSenhaRedefinir = async(req, res, next) => {
         return res.status(409).json({message: "As senhas estão diferentes, tente novamente."});
     };
 
-    if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha.length < 6) {
+    if (body.novaSenha == undefined || !body.novaSenha || body.novaSenha.length < 5) {
         return res.status(409).json({message: "Insira uma nova senha válida."});
     };
     
@@ -121,7 +121,6 @@ const validaSenhaRedefinir = async(req, res, next) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    console.log(decoded.id);
     const userId = decoded.id;
 
     const [senhaDB] = await connection.query('SELECT senha FROM usuarios WHERE id = ?', [userId]);

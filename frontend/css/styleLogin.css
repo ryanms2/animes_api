@@ -1,6 +1,9 @@
 body {
     background-color: #1A1A1A;
     color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
 }
 
 #login-form,
@@ -27,4 +30,25 @@ form {
 
 #add {
     background-color: red;
+}
+
+#infoAccount {
+    position: absolute;
+    left: 40%;
+    width: 40%;
+    
+}
+
+input {
+    width: 50%;
+    border-radius: 10px;
+    border: 0px;
+}
+
+#redefinirSenha {
+    margin-top: 20px;
+}
+
+button {
+    width: 23%;
 }

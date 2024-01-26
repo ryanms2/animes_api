@@ -220,6 +220,9 @@ btnAnimesF.addEventListener("click", () => animesFavoritos());
 async function animesFavoritos() {
     const apiUrl = "http://localhost:3000/api/animesFavoritos";
     const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
+    if (tokenBearer === null) {
+        return window.location.href = 'conta.html';
+    };
     
     const configuracaoRequisicao = {
         method: "POST",
