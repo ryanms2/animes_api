@@ -40,15 +40,15 @@ const checkAdded = async (anime) => {
     
     try {
        const [verify] = await connection.execute(query, [titulo]);
-        
+        console.log(verify)
        if (verify.length > 0) {
         return {message: "esse anime já foi adicionado"};
        } else {
         return {pass: 1};
-       }
+       };
     } catch (error) {
-        
-    }
+        console.log(error);
+    };
 };
 
 const deleteAnime = async (id) => {
