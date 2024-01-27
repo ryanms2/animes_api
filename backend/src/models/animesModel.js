@@ -43,13 +43,10 @@ const checkAdded = async (anime, id) => {
     
     try {
        const [verify] = await connection.execute(query, [titulo]);
-        console.log(verify)
         const [verifyOne] = await connection.execute(queryOne, [idUser]);
-        console.log(verifyOne[0].id_anime)
         const idsAnimes = (verifyOne) => verifyOne.id_anime === idAnime;
         const idAnime = verify[0].id;
         const mIds = verifyOne.map(idsAnimes);
-        console.log(mIds[0])
         if (mIds[0] === false) {
             const inserir = await connection.execute(queryTwo, [idUser, idAnime]);
             return {message: "anime adicionado com sucesso"};
