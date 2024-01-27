@@ -33,14 +33,28 @@ const createAnime = async (anime) => {
     }
 };
 
-const checkAdded = async (anime) => {
+const checkAdded = async (anime, id) => {
     const { titulo } = anime;
+    const idUser = id;
 
-    const query = 'SELECT titulo FROM animes WHERE titulo= ?';
+    const query = 'SELECT id FROM animes WHERE titulo= ?';
+    const queryOne = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario= ?';
+    const queryTwo = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
     
     try {
        const [verify] = await connection.execute(query, [titulo]);
         console.log(verify)
+        const [verifyOne] = await connection.execute(queryOne, [idUser]);
+        console.log(verifyOne[0].id_anime)
+        const idsAnimes = (verifyOne) => verifyOne.id_anime === idAnime;
+        const idAnime = verify[0].id;
+        const mIds = verifyOne.map(idsAnimes);
+        console.log(mIds[0])
+        if (mIds[0] === false) {
+            const inserir = await connection.execute(queryTwo, [idUser, idAnime]);
+            return {message: "anime adicionado com sucesso"};
+        };
+
        if (verify.length > 0) {
         return {message: "esse anime já foi adicionado"};
        } else {

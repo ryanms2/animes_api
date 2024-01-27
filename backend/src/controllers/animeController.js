@@ -22,8 +22,22 @@ const createAnime = async (req, res) => {
 };
 
 const checkAdd = async (req, res, next) => {
-    const rec = await animesModel.checkAdded(req.body);
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+
+    const rec = await animesModel.checkAdded(req.body, decodedId);
     if (rec.message === "esse anime já foi adicionado") {
+        return res.status(200).json(rec);
+        
+    };
+    
+    if (rec.message === "anime adicionado com sucesso") {
         return res.status(200).json(rec);
         
     } else {

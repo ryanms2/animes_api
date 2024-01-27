@@ -30,14 +30,16 @@
         <div id="infoUser">
           
         </div>
+      </div>
+      <div class="container" id="redefinir">
         <div id="redefinir-nome">
           <h5>redefinir nome</h5>
           <form>
             <label for="nome">nome:</label>
-            <input type="text" id="nome" name="nome" required>
+            <input type="text" class="input-r" id="nome" name="nome" required>
 
             <label for="repita-nome">Repita o nome:</label>
-            <input type="text" id="repita-nome" name="repita-nome" required>
+            <input type="text" class="input-r" id="repita-nome" name="repita-nome" required>
             <button type="button" id="mudaNome" class="btn btn-primary">mudar nome</button>
           </form>
         </div>
@@ -45,13 +47,13 @@
           <h5>redefinir senha</h5>
           <form>
             <label for="redefinir-senha">senha:</label>
-            <input type="password" id="redefinir-senha" name="redefinir-senha" required>
+            <input type="password" class="input-r" id="redefinir-senha" name="redefinir-senha" required>
 
             <label for="novaSenha">Nova senha:</label>
-            <input type="password" id="novaSenha" name="novaSenha" required>
+            <input type="password" class="input-r" id="novaSenha" name="novaSenha" required>
 
             <label for="repita-redSenha">Repita a senha:</label>
-            <input type="password" id="repita-redSenha" name="repita-redSenha" required>
+            <input type="password" class="input-r" id="repita-redSenha" name="repita-redSenha" required>
             <button type="button" id="mudaSenha" class="btn btn-primary">mudar senha</button>
           </form>
         </div>
@@ -62,34 +64,34 @@
             <h2>Login</h2>
             <form>
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" class="inputs" id="email" name="email" required>
 
                 <label for="senha">senha:</label>
-                <input type="password" id="senha" name="senha" required>
+                <input type="password" class="inputs" id="senha" name="senha" required>
 
                 <button type="button" class="btn btn-primary" onclick="login()">Login</button>
             </form>
-            <p>Não tem uma conta? <a href="" onclick="showSignUpForm()">Criar</a></p>
+            <p>Não tem uma conta? <a href="#" onclick="showSignUpForm()">Criar</a></p>
         </div>
 
         <div id="signup-form" style="display: none;">
             <h2>Cadastro</h2>
             <form>
                 <label for="novo-nome">Nome:</label>
-                <input type="text" id="novo-nome" name="novo-nome" required>
+                <input type="text" class="inputs" id="novo-nome" name="novo-nome" required>
 
                 <label for="novo-email">Email:</label>
-                <input type="email" id="novo-email" name="novo-email" required>
+                <input type="email" class="inputs" id="novo-email" name="novo-email" required>
 
                 <label for="nova-senha">Senha:</label>
-                <input type="password" id="nova-senha" name="nova-senha" required>
+                <input type="password" class="inputs" id="nova-senha" name="nova-senha" required>
 
                 <label for="Rnova-senha">Repita a senha:</label>
-                <input type="password" id="Rnova-senha" name="Rnova-senha" required>
+                <input type="password" class="inputs" id="Rnova-senha" name="Rnova-senha" required>
 
                 <button type="button" class="btn btn-primary" onclick="signUp()">Criar</button>
             </form>
-            <p>Já tem uma conta? <a href="" onclick="showLoginForm()">Entrar</a></p>
+            <p>Já tem uma conta? <a href="#" onclick="showLoginForm()">Entrar</a></p>
         </div>
     </div>
     <script src="js/scriptConta.js" defer></script>

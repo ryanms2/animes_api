@@ -10,12 +10,26 @@ body {
 #signup-form {
     width: 300px;
     margin: auto;
+    margin-top: 30px;
+    background-color: #131212;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+h2 {
+    text-align: center;
 }
 
 form {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.inputs {
+    border-radius: 10px;
+    border: 0px;
+
 }
 
 .alerta {
@@ -33,20 +47,32 @@ form {
 }
 
 #infoAccount {
-    position: absolute;
-    left: 40%;
+    margin: auto;
     width: 40%;
     
 }
 
-input {
+#redefinir {
+    width: 100%;
+    position: absolute;
+    left: 5px;
+    display: flex;
+}
+
+.input-r {
     width: 50%;
     border-radius: 10px;
     border: 0px;
 }
 
+#redefinir-nome {
+    margin-top: 100px;
+    width: 50%;
+}
+
 #redefinirSenha {
-    margin-top: 20px;
+    margin-top: 95px;
+    width: 50%;
 }
 
 button {
