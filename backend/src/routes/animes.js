@@ -18,7 +18,7 @@ animeController.checkAdd,
 animeController.createAnime
 );
 
-router.delete("/animes/:id",
+router.delete("/animes",
 usuarioMiddleware.checkToken,
 animeController.deleteAnime);
 

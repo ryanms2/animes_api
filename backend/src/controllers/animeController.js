@@ -47,10 +47,18 @@ const checkAdd = async (req, res, next) => {
 };
 
 const deleteAnime = async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.body;
+    const jwt = require("jsonwebtoken");
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-    await animesModel.deleteAnime(id);
-    return res.status(204).json();
+    const secret = process.env.SECRET;
+  
+    const decoded = jwt.verify(token, secret);
+    const decodedId = decoded.id;
+
+    const deletado = await animesModel.deleteAnime(id, decodedId);
+    return res.status(204).json(deletado);
 };
 
 const updateAnime = async (req, res) => {

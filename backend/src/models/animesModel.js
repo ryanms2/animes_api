@@ -47,7 +47,7 @@ const checkAdded = async (anime, id) => {
         const idsAnimes = (verifyOne) => verifyOne.id_anime === idAnime;
         const idAnime = verify[0].id;
         const mIds = verifyOne.map(idsAnimes);
-        if (mIds[0] === false) {
+        if (mIds[0] === false || mIds == "") {
             const inserir = await connection.execute(queryTwo, [idUser, idAnime]);
             return {message: "anime adicionado com sucesso"};
         };
@@ -62,9 +62,12 @@ const checkAdded = async (anime, id) => {
     };
 };
 
-const deleteAnime = async (id) => {
-    const [removedAnime] = await connection.execute('DELETE FROM animes WHERE id=?', [id]);
-    return removedAnime;
+const deleteAnime = async (idAnime, idUser) => {
+    const query = `DELETE FROM animes_favoritos_usuario
+    WHERE id_usuario = ? AND id_anime = ?;
+    `
+    const [removedAnime] = await connection.execute(query, [idUser, idAnime]);
+    return {message: "Anime favorito removido com sucesso"};
 };
 
 const updateAnime = async (id, anime) => {

@@ -49,14 +49,18 @@ form {
 #infoAccount {
     margin: auto;
     width: 40%;
+    text-align: center;
+    background-color: #131212;
+    border-radius: 10px;
     
 }
 
 #redefinir {
-    width: 100%;
-    position: absolute;
-    left: 5px;
+    margin: auto;
     display: flex;
+    background-color: #131212;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .input-r {

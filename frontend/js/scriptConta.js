@@ -1,6 +1,7 @@
 async function showInfoAccount() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('infoAccount').style.display = 'block';
+    document.getElementById("redefinir").style.display = '';
 
     const apiUrl = "http://localhost:3000/api/usuario/logado";
     
@@ -39,6 +40,7 @@ if (tokenBearer !== null) {
 function showLogin() {
     document.getElementById('login').style.display = 'block';
     document.getElementById('infoAccount').style.display = 'none';
+    document.getElementById("redefinir").style.display = 'none';
 };
 
 if (tokenBearer === null) {

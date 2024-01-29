@@ -78,9 +78,9 @@ btnAventura.addEventListener("click", () => {
     carregarListaPorCategoriaEOffset(categoriaAtual, offset);
 });
 
-const btnAcao = document.getElementById("btnAcao");
-btnAcao.addEventListener("click", () => {
-    categoriaAtual = "acao";
+const btnDrama = document.getElementById("btnDrama");
+btnDrama.addEventListener("click", () => {
+    categoriaAtual = "drama";
     offset = 0;
     carregarListaPorCategoriaEOffset(categoriaAtual, offset);
 });
@@ -252,6 +252,46 @@ async function animesFavoritos() {
     };
 };
 
+async function deletarAnime(idAnime) {
+    const apiUrl = "http://localhost:3000/api/animes/";
+    const tokenBearer = sessionStorage.getItem('token'); // Substitua pelo seu token
+    
+    const corpoRequisicao = {
+        id: idAnime
+    };
+
+    const configuracaoRequisicao = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenBearer}`
+        },
+        body: JSON.stringify(corpoRequisicao)
+    };
+
+    try {
+        const resp = await fetch(apiUrl, configuracaoRequisicao);
+
+        if (!resp.ok) {
+            throw new Error('Erro ao excluir o anime');
+          };
+        exibirAlerta("Anime deletado com sucesso");
+        const col = document.getElementById("animes");
+        col.innerHTML= "";
+        animesFavoritos();
+    } catch (erro) {
+        console.log(erro);
+        exibirAlerta("Erro ao deletar anime favorito");
+    };
+};
+
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("btnDeletar")) {
+        const id = event.target.dataset.id_anime;
+        deletarAnime(id);
+    };
+});
+
 function renderizarListaDeAnimesFavoritos(animes) {
     const col = document.getElementById("animes");
     const animesF = animes;
@@ -268,6 +308,7 @@ function renderizarListaDeAnimesFavoritos(animes) {
                 <img class="card-img-top" alt="..." src="${animesF[i].imagem}" style="height: 250px;" >
                 <div class="card-body">
                     <h5 class="card-title">${animesF[i].titulo}</h5>
+                    <button type="button" class="btn btn-danger btnDeletar" data-id_anime="${animesF[i].id}">Deletar</button>
                 </div>
             </div>`;
 
