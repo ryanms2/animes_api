@@ -37,29 +37,33 @@ const checkAdded = async (anime, id) => {
     const { titulo } = anime;
     const idUser = id;
 
-    const query = 'SELECT id FROM animes WHERE titulo= ?';
-    const queryOne = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario= ?';
+    const query = 'SELECT id FROM animes WHERE titulo = ?';
+    const queryOne = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario = ?';
     const queryTwo = 'INSERT INTO animes_favoritos_usuario (id_usuario, id_anime) VALUES (?, ?)';
     
     try {
-       const [verify] = await connection.execute(query, [titulo]);
-        const [verifyOne] = await connection.execute(queryOne, [idUser]);
-        const idsAnimes = (verifyOne) => verifyOne.id_anime === idAnime;
-        const idAnime = verify[0].id;
-        const mIds = verifyOne.map(idsAnimes);
-        if (mIds[0] === false || mIds == "") {
-            const inserir = await connection.execute(queryTwo, [idUser, idAnime]);
-            return {message: "anime adicionado com sucesso"};
-        };
+        const [verify] = await connection.execute(query, [titulo]);
 
-       if (verify.length > 0) {
-        return {message: "esse anime já foi adicionado"};
-       } else {
-        return {pass: 1};
-       };
+        if (verify.length === 0) {
+            return { pass: 1 };
+        }
+
+        const idAnime = verify[0].id;
+
+        const [verifyOne] = await connection.execute(queryOne, [idUser]);
+
+        const idsAnimes = verifyOne.map(item => item.id_anime);
+
+        if (idsAnimes.includes(idAnime)) {
+            return { message: "esse anime já foi adicionado" };
+        } else {
+            const inserir = await connection.execute(queryTwo, [idUser, idAnime]);
+            return { message: "anime adicionado com sucesso" };
+        }
     } catch (error) {
         console.log(error);
-    };
+        return { error: "Erro na verificação" };
+    }
 };
 
 const deleteAnime = async (idAnime, idUser) => {

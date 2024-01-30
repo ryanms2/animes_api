@@ -30,8 +30,8 @@ const checkAdd = async (req, res, next) => {
   
     const decoded = jwt.verify(token, secret);
     const decodedId = decoded.id;
-
-    const rec = await animesModel.checkAdded(req.body, decodedId);
+    try {
+        const rec = await animesModel.checkAdded(req.body, decodedId);
     if (rec.message === "esse anime já foi adicionado") {
         return res.status(200).json(rec);
         
@@ -43,7 +43,9 @@ const checkAdd = async (req, res, next) => {
     } else {
         next();
     };
-    
+    } catch (error) {
+        console.log(error);
+    };
 };
 
 const deleteAnime = async (req, res) => {

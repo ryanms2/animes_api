@@ -129,6 +129,14 @@ async function login() {
     const inputEmail = document.getElementById("email").value;
     const inputSenha = document.getElementById("senha").value;
 
+    if (!inputEmail || inputEmail === undefined || inputEmail == "" || inputEmail === null) {
+        return exibirAlerta("Insira um email");
+    };
+
+    if (!inputSenha || inputSenha === undefined || inputSenha == "" || inputSenha === null) {
+        return exibirAlerta("Insira uma senha");
+    };
+
     
     const corpoRequisicao = {
         email: inputEmail,
@@ -214,7 +222,9 @@ function exibirAlerta(mensagem) {
         "As senhas devem ser iguais.",
         "Erro ao fazer o login, tente novamente.",
         "Erro ao criar conta. Por favor, tente novamente.",
-        "Os nomes estão diferentes, tente novamente."
+        "Os nomes estão diferentes, tente novamente.",
+        "Insira um email",
+        "Insira uma senha"
       ];
       
       if (mensagensErro.includes(mensagem)) {

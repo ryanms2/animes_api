@@ -134,6 +134,7 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
         };
 
         const data = await resp.json();
+        console.log(data)
         if (!data.insertId) {
            exibirAlerta(data.message);
            return;
@@ -171,6 +172,7 @@ async function addFavorito(id) {
 
         };
         const data = await resp.json();
+        console.log(data)
         exibirAlerta(data.message);
     } catch (error) {
         console.error(error);
