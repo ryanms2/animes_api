@@ -1,39 +1,43 @@
+@charset "UTF-8";
 
-h1 {
-    color: white;
-}
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
 
 body {
+    font-size: 16px;
     background-color: #1A1A1A;
-}
-
-#searchInput {
-    width: 30%;
-}
-
-.col{
-    margin-bottom: 5px;
-}
-
-.card{
-    background-color: transparent;
     color: white;
 }
-.card-img-top {
-    transition: all 0.3s ease-in-out;
+
+#animes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
 }
 
+.card {
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden; /* Impede que a imagem ultrapasse os limites do card */
+    object-fit: contain;
+}
 
+.card img {
+    width: 100%;
+    height: 100%; /* Garante que a imagem cubra totalmente o espaço disponível */
+    object-fit: cover; /* Mantém a proporção da imagem, cobrindo totalmente o espaço disponível */
+}
 
-.card-img-top:hover {
+.card:hover {
     opacity: 0.8;
     transform: scale(1.1);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .card-body {
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 .alerta {
@@ -48,4 +52,30 @@ body {
 
 #add {
     background-color: red;
+}
+
+#botoes {
+    margin-top: 20px;
+}
+
+#btnSearch {
+    margin-top: 10px;
+}
+
+#animesFavoritos {
+    font-family: 'Abril Fatface', serif;
+}
+
+#searchInput {
+    width: 50%;
+}
+
+@media only screen and (max-width: 599px) {
+    body {
+        font-size: 12px;
+    }
+
+    .card-container {
+        grid-template-columns: 1fr;
+    }
 }

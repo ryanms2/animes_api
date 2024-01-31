@@ -171,6 +171,22 @@ async function signUp() {
     const inputEmail = document.getElementById("novo-email").value;
     const inputSenha = document.getElementById("nova-senha").value;
     const inputRSenha = document.getElementById("Rnova-senha").value;
+
+    if (!inputNome || inputNome === null || inputNome === undefined || inputNome == "") {
+        return exibirAlerta("Insira um nome válido");
+    };
+
+    if (!inputEmail || inputEmail === null || inputNominputEmail === undefined || inputEmail == "") {
+        return exibirAlerta("Insira um email válido");
+    };
+
+    if (!inputSenha || inputNominputSenha === null || inputSenha === undefined || inputSenha == "") {
+        return exibirAlerta("Insira uma senha válida");
+    };
+
+    if (!inputRSenha || inputRSenha === null || inputRSenha === undefined || inputRSenha == "") {
+        return exibirAlerta("Insira uma senha válida");
+    };
     
     const corpoRequisicao = {
         nome: inputNome,
@@ -224,7 +240,10 @@ function exibirAlerta(mensagem) {
         "Erro ao criar conta. Por favor, tente novamente.",
         "Os nomes estão diferentes, tente novamente.",
         "Insira um email",
-        "Insira uma senha"
+        "Insira uma senha",
+        "Insira um nome válido",
+        "Insira um email válido",
+        "Insira uma senha válida"
       ];
       
       if (mensagensErro.includes(mensagem)) {
