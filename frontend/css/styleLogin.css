@@ -34,13 +34,23 @@ form {
 
 .alerta {
     position: fixed;
-    top: 10px;
-    right: 40%;
+    top: 30px;
+    left: 43%;
+    transform: translate(-50%, -50%);
     background-color: #4CAF50;
     color: white;
     padding: 15px;
     border-radius: 5px;
+    z-index: 1000; /* Certifica-se de que o alerta apareça acima de outros elementos */
+
+    /* Adiciona um media query para ajustar o posicionamento em telas pequenas */
+    @media only screen and (max-width: 500px) {
+        top: 2%;
+        left: 23%;
+    }
 }
+
+
 
 #add {
     background-color: red;
