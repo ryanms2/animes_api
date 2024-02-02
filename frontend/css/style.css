@@ -64,6 +64,7 @@ body {
 
 #animesFavoritos {
     font-family: 'Abril Fatface', serif;
+    cursor: pointer;
 }
 
 #searchInput {
