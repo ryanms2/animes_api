@@ -121,7 +121,7 @@ const validaSenhaRedefinir = async(req, res, next) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const userId = decoded.id;
+    const userId = decoded.usuario.id;
 
     const [senhaDB] = await connection.query('SELECT senha FROM usuarios WHERE id = ?', [userId]);
 
@@ -186,7 +186,7 @@ const checkToken = (req, res, next) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
 
     const connection = require("../db/conn");
     const query = 'SELECT * FROM usuarios WHERE id = ?';
