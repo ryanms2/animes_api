@@ -16,8 +16,8 @@ usuarioMiddleware.validaSenhaLogin,
 usuarioController.login);
 
 router.post("/usuario/logado",
-usuarioMiddleware.usuarioExiste,
 usuarioMiddleware.checkToken,
+usuarioMiddleware.usuarioExiste,
 usuarioController.logado);
 
 router.post("/usuario/addAnime",

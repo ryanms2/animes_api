@@ -154,14 +154,14 @@ const checkToken = (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (!token) {
+    if (!token || token == '' || token === undefined) {
        return res.status(401).json({ msg: "Acesso negado!" }); 
     };
     try {
       const secret = process.env.SECRET;
   
       const decoded = jwt.verify(token, secret);
-      console.log(decoded.usuario.id);
+      console.log(decoded);
       const decodedId = decoded.usuario.id;
       // Verifica se o token está expirado
       if (decoded.exp < Date.now() / 1000) {
@@ -173,7 +173,12 @@ const checkToken = (req, res, next) => {
       };
       
     } catch (err) {
-      return res.status(400).json({ msg: "O Token é inválido!"});
+        if (err instanceof jwt.TokenExpiredError) {
+            return res.status(401).json({ message: "Token expirado, faça login novamente." });
+        } else {
+            // Outro erro de verificação de token
+            return res.status(401).json({ message: 'Token inválido' });
+        };
     };
     next();
   };
@@ -187,15 +192,18 @@ const checkToken = (req, res, next) => {
   
     const decoded = jwt.verify(token, secret);
     const decodedId = decoded.usuario.id;
+    try {
+        const connection = require("../db/conn");
+        const query = 'SELECT * FROM usuarios WHERE id = ?';
+        const [user] = await connection.execute(query, [decodedId]);
 
-    const connection = require("../db/conn");
-    const query = 'SELECT * FROM usuarios WHERE id = ?';
-    const [user] = await connection.execute(query, [decodedId]);
-
-    if (user == '' || user == 0 || !user || user == undefined) {
-        return res.status(404).json({message: "Usuário não existe."});
-    };
+        if (user == '' || user == 0 || !user || user == undefined) {
+            return res.status(404).json({message: "Usuário não existe."});
+        };
     next();
+    } catch (error) {
+        console.log(error);
+    };
   };
     
 module.exports = {

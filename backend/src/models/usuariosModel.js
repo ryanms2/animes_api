@@ -46,6 +46,7 @@ const login = async (usuario) => {
         token = jwt.sign({ usuario, exp: expiracao }, secret);
         return { message: "Autenticação realizada com sucesso!", token };
       } catch (error) {
+        console.log(error);
         return { message: error };
       };
 };

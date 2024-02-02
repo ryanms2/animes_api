@@ -1,3 +1,8 @@
+function logout() {
+    sessionStorage.removeItem('token');
+    window.location.href = 'conta.html';
+};
+
 async function showInfoAccount() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('infoAccount').style.display = 'block';
@@ -25,8 +30,12 @@ async function showInfoAccount() {
         
         const infosUser = document.getElementById("infoUser");
         infosUser.innerHTML = `<img src="" alt="">
+        <span class="material-symbols-outlined" id="logout" onclick="logout()">
+            logout
+        </span>
         <h2>${data[0].nome}</h2>
         <p>${data[0].email}</p>`;
+        
     } catch (error) {
         console.log(error);
         exibirAlerta("Erro ao redefinir nome, tente novamente.");
@@ -241,9 +250,14 @@ function exibirAlerta(mensagem) {
         "Os nomes estão diferentes, tente novamente.",
         "Insira um email",
         "Insira uma senha",
+        "Insira um nome válido.",
         "Insira um nome válido",
         "Insira um email válido",
-        "Insira uma senha válida"
+        "Insira uma senha válida",
+        "O Token é inválido!",
+        "Login não autorizado, tente novamente.",
+        "Token expirado, faça login novamente.",
+        "Usuário não existe."
       ];
       
       if (mensagensErro.includes(mensagem)) {

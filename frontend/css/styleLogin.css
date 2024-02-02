@@ -91,4 +91,12 @@ form {
 
 button {
     width: 23%;
+    min-width: 70px;
+}
+
+#logout {
+    position: relative;
+    float: right;
+    top: 33px;
+    cursor: pointer;
 }

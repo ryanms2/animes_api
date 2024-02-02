@@ -203,7 +203,11 @@ function exibirAlerta(mensagem) {
         "Insira uma nova senha válida.",
         "As senhas devem ser iguais.",
         "Erro ao fazer o login, tente novamente.",
-        "Erro ao criar conta. Por favor, tente novamente."
+        "Erro ao criar conta. Por favor, tente novamente.",
+        "O Token é inválido!",
+        "Login não autorizado, tente novamente.",
+        "Token expirado, faça login novamente.",
+        "Usuário não existe."
       ];
       
       if (mensagensErro.includes(mensagem)) {
@@ -217,6 +221,14 @@ function exibirAlerta(mensagem) {
     setTimeout(() => {
         document.body.removeChild(alerta);
     }, 2500);
+
+    if (mensagem === "Token expirado, faça login novamente." || "Token inválido") {
+        sessionStorage.removeItem('token');
+        setTimeout(() => {
+            window.location.href = 'conta.html';
+        }, 2500);
+        
+    };
 };
 
 const btnAnimesF = document.getElementById("animesFavoritos");
@@ -239,11 +251,7 @@ async function animesFavoritos() {
 
     try {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
-
-        if (!resp.ok) {
-            throw new Error("Erro ao adicionar anime favorito");
-
-        };
+        
         const data = await resp.json();
         if (data.message) {
             return exibirAlerta(data.message);
