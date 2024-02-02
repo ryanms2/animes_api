@@ -222,12 +222,9 @@ function exibirAlerta(mensagem) {
         document.body.removeChild(alerta);
     }, 2500);
 
-    if (mensagem === "Token expirado, faça login novamente." || "Token inválido") {
+    if (mensagem === "Token expirado, faça login novamente." || mensagem === "Token inválido") {
         sessionStorage.removeItem('token');
-        setTimeout(() => {
-            window.location.href = 'conta.html';
-        }, 2500);
-        
+        window.location.href = 'conta.html';
     };
 };
 
