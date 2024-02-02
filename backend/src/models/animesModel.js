@@ -4,19 +4,23 @@ const getAllAnimesF = async (idUser) => {
     const id_User = idUser;
 
     const query = 'SELECT id_anime FROM animes_favoritos_usuario WHERE id_usuario= ?';
-    const [idAnimesF] = await connection.execute(query, [id_User]);
+
+    try {
+        const [idAnimesF] = await connection.execute(query, [id_User]);
     
-    if (idAnimesF.length == 0) {
-        return {message: "Você não tem animes favoritos"};
+        if (idAnimesF.length == 0) {
+            return {message: "Você não tem animes favoritos"};
+        };
+    
+        const idAnimes = (idAnimesF) => idAnimesF.id_anime;
+        const obtIdAnimes = idAnimesF.map(idAnimes);
+        const queryOne = `SELECT * FROM animes WHERE id IN (${obtIdAnimes})`;
+        const [animesF] = await connection.execute(queryOne);
+    
+        return animesF;
+    } catch (error) {
+        console.log(error);
     };
-
-    const idAnimes = (idAnimesF) => idAnimesF.id_anime;
-    const obtIdAnimes = idAnimesF.map(idAnimes);
-    const queryOne = `SELECT * FROM animes WHERE id IN (${obtIdAnimes})`;
-    const [animesF] = await connection.execute(queryOne);
-    
-
-    return animesF;
 };
 
 const createAnime = async (anime) => {
@@ -68,10 +72,14 @@ const checkAdded = async (anime, id) => {
 
 const deleteAnime = async (idAnime, idUser) => {
     const query = `DELETE FROM animes_favoritos_usuario
-    WHERE id_usuario = ? AND id_anime = ?;
-    `
-    const [removedAnime] = await connection.execute(query, [idUser, idAnime]);
-    return {message: "Anime favorito removido com sucesso"};
+    WHERE id_usuario = ? AND id_anime = ?;`;
+
+    try {
+        const [removedAnime] = await connection.execute(query, [idUser, idAnime]);
+        return {message: "Anime favorito removido com sucesso"}; 
+    } catch (error) {
+        console.log(error);
+    };
 };
 
 module.exports = {

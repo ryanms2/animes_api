@@ -4,12 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const registro = async(usuario) => {
     const { nome, email, senha } = usuario;
-    
-
-    const salt = await bcrypt.genSalt(12);
-    const hashedSenha = await bcrypt.hash(senha, salt);
 
     try {
+        const salt = await bcrypt.genSalt(12);
+        const hashedSenha = await bcrypt.hash(senha, salt);
 
         const [criadoUsuario] = await connection.query('INSERT INTO usuarios (nome, senha, email) VALUES (?, ?, ?)', [nome, hashedSenha, email]);
 
@@ -84,9 +82,12 @@ const redefinirNome = async(nome, id) => {
 };
 
 const logado = async(id) => {
-  const [user] = await connection.query('SELECT * FROM usuarios WHERE id = ?', [id]);
-  
-  return user;
+  try {
+    const [user] = await connection.query('SELECT * FROM usuarios WHERE id = ?', [id]);
+    return user;
+  } catch (error) {
+    console.log(error);
+  };
 };
 
 const addAnimeFavorito = async(decodedId, idAnime) => {

@@ -8,7 +8,7 @@ let offset = 20; // Variável para controlar o offset na API
 let searchTerm = ""; // Variável para armazenar o termo de pesquisa
 
 // Função para carregar a lista de animes com base na categoria, offset e termo de pesquisa
-function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
+async function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
     const baseurl = "https://kitsu.io/api/edge/anime";
     const limit = 20;
 
@@ -17,7 +17,7 @@ function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
     console.log("URL:", url);
 
     
-    fetch(url)
+    await fetch(url)
         .then((resp) => resp.json())
         .then((dados) => {
             const animes = dados.data;
