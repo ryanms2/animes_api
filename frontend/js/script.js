@@ -1,3 +1,8 @@
+history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, document.URL);
+});
+
 let categoriaAtual = "aventura"; // Inicializa com a categoria "Aventura"
 let offset = 20; // Variável para controlar o offset na API
 let searchTerm = ""; // Variável para armazenar o termo de pesquisa
