@@ -63,29 +63,9 @@ const deleteAnime = async (req, res) => {
     return res.status(204).json(deletado);
 };
 
-const updateAnime = async (req, res) => {
-    const { id } = req.params;
-    const resposta = await animesModel.updateAnime(id, req.body);
-    return res.status(200).json(resposta);
-};
-
-const selectAnime = async (req, res) => {
-    const { id } = req.params;
-
-    const [anime] = await animesModel.selectAnime(id);
-
-    if (anime.length == 0) {
-        return res.status(400).json({message: "não encontrado"});
-    };
-
-    return res.status(200).json(anime);
-}
-
 module.exports = {
     getAllAnimesF,
     createAnime,
     deleteAnime,
-    updateAnime,
-    selectAnime,
     checkAdd
 };

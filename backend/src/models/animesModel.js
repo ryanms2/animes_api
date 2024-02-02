@@ -74,31 +74,9 @@ const deleteAnime = async (idAnime, idUser) => {
     return {message: "Anime favorito removido com sucesso"};
 };
 
-const updateAnime = async (id, anime) => {
-    const { titulo, imagem } = anime;
-    
-    const query = 'UPDATE animes SET titulo= ?, imagem= ? WHERE id= ?';
-
-    const [updatedAnime] = await connection.execute(query, [titulo, imagem, id]);
-    try {
-        return {message: "Anime atualizado com sucesso."};
-    } catch (error) {
-        console.log(error);
-        return {message: "Houve um erro ao atualizar o anime."};
-    };
-};
-
-const selectAnime = async (id) => {
-    const anime = await connection.execute('SELECT * FROM animes WHERE id= ?', [id]);
-
-    return anime;
-}
-
 module.exports = {
     getAllAnimesF,
     createAnime,
     deleteAnime,
-    updateAnime,
-    selectAnime,
     checkAdded
 };
