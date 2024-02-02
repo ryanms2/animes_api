@@ -129,9 +129,7 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
     try {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
-        if (!resp.ok) {
-            throw new Error("Erro ao adicionar anime favorito");
-        };
+        
 
         const data = await resp.json();
         console.log(data)

@@ -23,7 +23,7 @@ const redefinirSenha = async(req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
 
     const redefinido = await usuarioModel.redefinirSenha(repitaSenha, decodedId);
 
@@ -40,7 +40,7 @@ const redefinirNome = async(req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
 
     const redefinido = await usuarioModel.redefinirNome(repitaNome, decodedId);
 
@@ -55,7 +55,7 @@ const logado = async(req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
     const dados = await usuarioModel.logado(decodedId);
 
     res.status(200).json(dados);
@@ -71,7 +71,7 @@ const addAnimeFavorito = async(req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
 
     const resposta = await usuarioModel.addAnimeFavorito(decodedId, idAnime);
 

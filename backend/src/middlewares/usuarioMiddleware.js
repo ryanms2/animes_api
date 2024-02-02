@@ -161,9 +161,14 @@ const checkToken = (req, res, next) => {
       const secret = process.env.SECRET;
   
       const decoded = jwt.verify(token, secret);
-      console.log(decoded.id);
+      console.log(decoded.usuario.id);
+      const decodedId = decoded.usuario.id;
+      // Verifica se o token está expirado
+      if (decoded.exp < Date.now() / 1000) {
+        return res.status(401).json({ message: "Token expirado, faça login novamente." });
+      };
       
-      if (!decoded.id) {
+      if (!decodedId) {
         return res.status(401).json({message: "Login não autorizado, tente novamente."});
       };
       

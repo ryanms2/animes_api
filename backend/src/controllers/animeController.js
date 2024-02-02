@@ -8,7 +8,7 @@ const getAllAnimesF = async (req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
     const animes = await animesModel.getAllAnimesF(decodedId);
     
     return res.status(200).json(animes);
@@ -29,7 +29,7 @@ const checkAdd = async (req, res, next) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
     try {
         const rec = await animesModel.checkAdded(req.body, decodedId);
     if (rec.message === "esse anime já foi adicionado") {
@@ -57,7 +57,7 @@ const deleteAnime = async (req, res) => {
     const secret = process.env.SECRET;
   
     const decoded = jwt.verify(token, secret);
-    const decodedId = decoded.id;
+    const decodedId = decoded.usuario.id;
 
     const deletado = await animesModel.deleteAnime(id, decodedId);
     return res.status(204).json(deletado);

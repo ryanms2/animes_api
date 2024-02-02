@@ -37,14 +37,13 @@ const login = async (usuario) => {
       try {
         const secret = process.env.SECRET;
     
-        const token = jwt.sign(
-          {
+        const usuario = {
             email: user[0].email,
             id: user[0].id,
-          },
-          secret
-        );
-    
+          };
+          
+        const expiracao = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hora de expiração
+        token = jwt.sign({ usuario, exp: expiracao }, secret);
         return { message: "Autenticação realizada com sucesso!", token };
       } catch (error) {
         return { message: error };
