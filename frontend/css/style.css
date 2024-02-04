@@ -71,6 +71,8 @@ body {
 #animesFavoritos {
     font-family: 'Abril Fatface', serif;
     cursor: pointer;
+    border: 0px;
+    background-color: black;
 }
 
 #searchInput {
@@ -84,9 +86,5 @@ body {
 @media only screen and (max-width: 599px) {
     body {
         font-size: 12px;
-    }
-
-    .card-container {
-        grid-template-columns: 1fr;
     }
 }
