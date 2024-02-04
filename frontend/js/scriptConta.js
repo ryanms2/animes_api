@@ -163,10 +163,16 @@ async function login() {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
-        const token = data.token;
-        sessionStorage.setItem('token', token);
+        if (data.message === 'Autenticação realizada com sucesso!') {
+            const token = data.token;
+            sessionStorage.setItem('token', token);
 
-        window.location.href = 'index.html';
+            window.location.href = 'index.html';
+            return;
+        };
+
+        exibirAlerta(data.message);
+        
     } catch (error) {
         console.log(error);
         exibirAlerta("Erro ao fazer o login, tente novamente.");

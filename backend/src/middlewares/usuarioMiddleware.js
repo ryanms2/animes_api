@@ -161,7 +161,6 @@ const checkToken = (req, res, next) => {
       const secret = process.env.SECRET;
   
       const decoded = jwt.verify(token, secret);
-      console.log(decoded);
       const decodedId = decoded.usuario.id;
       // Verifica se o token está expirado
       if (decoded.exp < Date.now() / 1000) {
