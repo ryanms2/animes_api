@@ -216,10 +216,10 @@ function exibirAlerta(mensagem) {
       
     alerta.className = "alerta animate__animated animate__jello";
     alerta.textContent = mensagem;
-    document.body.appendChild(alerta);
+    document.getElementById("cAlerta").appendChild(alerta);
     
     setTimeout(() => {
-        document.body.removeChild(alerta);
+        document.getElementById("cAlerta").removeChild(alerta);
     }, 2500);
 
     if (mensagem === "Token expirado, faça login novamente." || mensagem === "Token inválido") {

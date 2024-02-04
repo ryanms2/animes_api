@@ -61,6 +61,7 @@ const btnMudaSenha = document.getElementById("mudaSenha");
 
 btnMudaNome.addEventListener("click", ()=> redefinirNome());
 btnMudaSenha.addEventListener("click", ()=> redefinirSenha());
+
 async function redefinirNome() {
     const apiUrl = "http://localhost:3000/api/usuario/redefinirNome";
     const inputNome = document.getElementById("nome").value;
@@ -85,6 +86,10 @@ async function redefinirNome() {
         const data = await resp.json();
         console.log(data)
         exibirAlerta(data.message);
+
+        if (data.message === "Nome atualizado com sucesso!") {
+            window.location.href = 'conta.html';
+        };
     } catch (error) {
         console.log(error);
         exibirAlerta("Erro ao redefinir nome, tente novamente.");
@@ -116,6 +121,10 @@ async function redefinirSenha() {
 
         const data = await resp.json();
         exibirAlerta(data.message);
+
+        if (data.message === "Senha atualizada com sucesso!") {
+            window.location.href = 'conta.html';
+        };
     } catch (error) {
         console.log(error);
         exibirAlerta("Erro ao redefinir a senha, tente novamente.");
@@ -272,9 +281,15 @@ function exibirAlerta(mensagem) {
       
     alerta.className = "alerta animate__animated animate__jello";
     alerta.textContent = mensagem;
-    document.body.appendChild(alerta);
+    
+    document.getElementById("cAlerta").appendChild(alerta);
     
     setTimeout(() => {
-        document.body.removeChild(alerta);
+        document.getElementById("cAlerta").removeChild(alerta);
     }, 2500);
+
+    if (mensagem === "Token expirado, faça login novamente." || mensagem === "Token inválido") {
+        sessionStorage.removeItem('token');
+        window.location.href = 'conta.html';
+    };
 };
