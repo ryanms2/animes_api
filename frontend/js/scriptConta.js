@@ -22,7 +22,12 @@ async function showInfoAccount() {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
-        console.log(data)
+
+        if (data.message === "Token expirado, faça login novamente." || data.message === "Token inválido") {
+            sessionStorage.removeItem('token');
+            window.location.href = 'conta.html';
+        };
+
         if (data.message) {
         exibirAlerta(data.message);
             
@@ -84,7 +89,12 @@ async function redefinirNome() {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
-        console.log(data)
+
+        if (data.message === "Token expirado, faça login novamente." || data.message === "Token inválido") {
+            sessionStorage.removeItem('token');
+            window.location.href = 'conta.html';
+        };
+
         exibirAlerta(data.message);
 
         if (data.message === "Nome atualizado com sucesso!") {
@@ -120,6 +130,12 @@ async function redefinirSenha() {
         const resp = await fetch(apiUrl, configuracaoRequisicao);
 
         const data = await resp.json();
+
+        if (data.message === "Token expirado, faça login novamente." || data.message === "Token inválido") {
+            sessionStorage.removeItem('token');
+            window.location.href = 'conta.html';
+        };
+
         exibirAlerta(data.message);
 
         if (data.message === "Senha atualizada com sucesso!") {
