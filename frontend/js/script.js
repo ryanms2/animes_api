@@ -14,7 +14,6 @@ async function carregarListaPorCategoriaEOffset(categoria, offsetValue, term) {
 
     const searchTermParam = term ? `&filter[text]=${term}` : ""; 
     const url = `${baseurl}?filter[categories]=${categoria}&page[limit]=${limit}&page[offset]=${Math.max(offsetValue, 0)}${searchTermParam}`;
-    console.log("URL:", url);
 
     
     await fetch(url)
@@ -137,7 +136,6 @@ async function adicionarAnimeFavorito(nomeAnime, imagemAnime) {
         
 
         const data = await resp.json();
-        console.log(data)
 
         if (data.message === "Token expirado, faça login novamente." || data.message === "Token inválido") {
             sessionStorage.removeItem('token');
@@ -163,7 +161,7 @@ async function addFavorito(id) {
     const corpoRequisicao = {
         idAnime: id
     };
-    console.log(corpoRequisicao)
+
     const configuracaoRequisicao = {
         method: "POST",
         headers: {
@@ -181,7 +179,7 @@ async function addFavorito(id) {
 
         };
         const data = await resp.json();
-        console.log(data)
+
         exibirAlerta(data.message);
     } catch (error) {
         console.error(error);
